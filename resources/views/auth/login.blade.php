@@ -20,12 +20,13 @@
                             <div class="col-lg-6">
                                 <div class="d-flex flex-column h-100">
                                     <div class="auth-brand p-4">
-                                        <a href="{{ route('any', 'index') }}" class="logo-light">
+                                        {{-- <a href="{{ route('any', 'index') }}" class="logo-light">
                                             <img src="/images/logo.png" alt="logo" height="22">
                                         </a>
                                         <a href="{{ route('any', 'index') }}" class="logo-dark">
                                             <img src="/images/logo-dark.png" alt="dark logo" height="22">
-                                        </a>
+                                        </a> --}}
+                                        <h3>HRM-EMPLOYEER-SYSTEM</h3>
                                     </div>
                                     <div class="p-4 my-auto">
                                         <h4 class="fs-20">Sign In</h4>
@@ -46,7 +47,7 @@
                                             <div class="mb-3">
                                                 <label for="emailaddress" class="form-label">Email address</label>
                                                 <input class="form-control" type="email" name="email" id="emailaddress"
-                                                    placeholder="Enter your email" value="test@test.com">
+                                                    placeholder="Enter your email" value="admin@test.com">
                                             </div>
                                             <div class="mb-3">
                                                 <a href="auth-forgotpw.html" class="text-muted float-end"><small>Forgot
@@ -67,7 +68,7 @@
                                                 <button class="btn btn-soft-primary w-100" type="submit"><i class="ri-login-circle-fill me-1"></i> <span class="fw-bold">Log In</span> </button>
                                             </div>
 
-                                            <div class="text-center mt-4">
+                                            {{-- <div class="text-center mt-4">
                                                 <p class="text-muted fs-16">Sign in with</p>
                                                 <div class="d-flex gap-2 justify-content-center mt-3">
                                                     <a href="javascript: void(0);" class="btn btn-soft-primary"><i
@@ -79,7 +80,7 @@
                                                     <a href="javascript: void(0);" class="btn btn-soft-dark"><i
                                                             class="ri-github-fill"></i></a>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </form>
                                         <!-- end form-->
                                     </div>
@@ -92,9 +93,9 @@
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="text-dark-emphasis">Don't have an account? <a href="{{ route('second', [ 'auth' , 'register']) }}"
+                    {{-- <p class="text-dark-emphasis">Don't have an account? <a href="{{ route('second', [ 'auth' , 'register']) }}"
                             class="text-dark fw-bold ms-1 link-offset-3 text-decoration-underline"><b>Sign up</b></a>
-                    </p>
+                    </p> --}}
                 </div> <!-- end col -->
             </div>
             <!-- end row -->
@@ -107,7 +108,7 @@
         <span class="text-dark">
             <script>
                 document.write(new Date().getFullYear())
-            </script> © Velonic - Theme by Techzaa
+            </script> © AP.ANUCHA
         </span>
     </footer>
 

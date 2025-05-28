@@ -22,19 +22,22 @@ use App\Livewire\Globalsets\GlobalSetManager;
 Route::middleware(['auth'])->group(function () {
     Route::get('/global-sets', GlobalSetManager::class)->name('global-sets');
 });
-
+Route::middleware(['auth'])->group(function () {
+ Route::get('/', CustomerIndex::class)->name('index');
+ Route::get('/home', CustomerIndex::class)->name('index');
 Route::prefix('customer')->name('customer.')->group(function () {
     Route::get('/', CustomerIndex::class)->name('index');
     Route::get('/{customer}/edit', CustomerEdit::class)->name('edit');
     Route::get('/create', CustomerCreate::class)->name('create');
+});
 });
 
 
 require __DIR__ . '/auth.php';
 
 Route::group(['prefix' => '/', 'middleware'=>'auth'], function () {
-    Route::get('', [RoutingController::class, 'index'])->name('root');
-    Route::get('/home', fn()=>view('index'))->name('home');
+    // Route::get('', [RoutingController::class, 'index'])->name('root');
+    // Route::get('/home', fn()=>view('index'))->name('home');
     Route::get('{first}/{second}/{third}', [RoutingController::class, 'thirdLevel'])->name('third');
     Route::get('{first}/{second}', [RoutingController::class, 'secondLevel'])->name('second');
     Route::get('{any}', [RoutingController::class, 'root'])->name('any');

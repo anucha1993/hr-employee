@@ -4,9 +4,20 @@
 <head>
     @include('layouts.shared/title-meta', ['title' => $title])
     @yield('css')
-    
+    <script>
+      // แบบกำหนดเองถาวร:
+      sessionStorage.setItem('__CONFIG__', JSON.stringify({
+          theme:'light',
+          nav:'topnav',
+          layout:{mode:'fluid',position:'fixed'},
+          topbar:{color:'light'},
+          menu:{color:'dark'},
+          sidenav:{size:'default',user:false}
+      }));
+      // หรือจะใช้ removeItem('__CONFIG__') ถ้าอยากให้ยึดค่าจาก Blade
+    </script> 
+
     @include('layouts.shared/head-css', ['mode' => $mode ?? '', 'demo' => $demo ?? ''])
-    
 </head>
 
 <body>
@@ -15,7 +26,6 @@
 
         @include('layouts.shared/topbar')
         @include('layouts.shared/left-sidebar')
-        
 
         <div class="content-page">
             <div class="content">
@@ -23,7 +33,7 @@
                 <!-- Start Content-->
                 <div class="container-fluid">
                     <br>
-                     {{ $slot }}
+                   {{ $slot }}
                 </div>
                 <!-- container -->
 
@@ -43,13 +53,7 @@
     @include('layouts.shared/footer-scripts')
 
     @vite(['resources/js/layout.js', 'resources/js/main.js'])
-    
 
 </body>
-
-@section('script')
-    @vite(['resources/js/pages/fileupload.init.js'])
-@endsection
-
 
 </html>
