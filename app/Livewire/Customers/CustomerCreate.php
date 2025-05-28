@@ -46,18 +46,10 @@ class CustomerCreate extends Component
         $this->validate([
             'customer_name' => 'required',
             'customer_taxid' => 'required|max:13|min:13',
-            'files.*' => 'file', // 2MB
+            'files.*' => 'file|max:2048', // ตรวจขนาด 2MB
         ]);
 
-        // 1. Upload Files
-        $uploadedFilePaths = [];
-        foreach ($this->files as $file) {
-            $filename = 'customer_' . $this->customer->id . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/customers', $filename, 'public');
-            $uploadedFilePaths[] = $path;
-        }
-
-        // 2. Save Customer
+        // 1. Save Customer ก่อน
         $customer = CustomerModel::create([
             'customer_name' => $this->customer_name,
             'customer_taxid' => $this->customer_taxid,
@@ -68,11 +60,23 @@ class CustomerCreate extends Component
             'customer_address_amphur' => $this->customer_address_amphur,
             'customer_address_province' => $this->customer_address_province,
             'customer_address_zipcode' => $this->customer_address_zipcode,
-            'customer_files' => $uploadedFilePaths,
             'created_by' => Auth::user()?->name ?? 'system',
         ]);
 
-        // 3. Save Contracts
+        // 2. Upload Files หลังจากมี customer_id แล้ว
+        $uploadedFilePaths = [];
+        foreach ($this->files as $file) {
+            $filename = 'customer_' . $customer->id . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('uploads/customers', $filename, 'public');
+            $uploadedFilePaths[] = $path;
+        }
+
+        // 3. Update customer record ด้วยไฟล์
+        $customer->update([
+            'customer_files' => $uploadedFilePaths,
+        ]);
+
+        // 4. Save Contracts
         foreach ($this->contracts as $contract) {
             if (!empty($contract['round']) && !empty($contract['number'])) {
                 $customer->contracts()->create([
@@ -85,7 +89,7 @@ class CustomerCreate extends Component
         }
 
         session()->flash('message', 'บันทึกข้อมูลลูกค้าเรียบร้อยแล้ว');
-        return redirect()->route('customer.index'); // เปลี่ยนเส้นทางตามที่คุณต้องการ
+        return redirect()->route('customer.index');
     }
 
     public function addContract()
