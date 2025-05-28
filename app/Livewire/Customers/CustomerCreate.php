@@ -46,7 +46,7 @@ class CustomerCreate extends Component
         $this->validate([
             'customer_name' => 'required',
             'customer_taxid' => 'required|max:13|min:13',
-            'files.*' => 'file|max:2048', // 2MB
+            'files.*' => 'file', // 2MB
         ]);
 
         // 1. Upload Files
@@ -107,20 +107,19 @@ class CustomerCreate extends Component
 
     public function calculateDuration($index)
     {
-        if (!isset($this->contracts[$index]['start_date']) || !isset($this->contracts[$index]['end_date'])) {
+        if (!isset($this->contracts[$index]['start_date'])) {
             $this->contracts[$index]['duration'] = '';
             return;
         }
 
         try {
-            $start = \Carbon\Carbon::parse($this->contracts[$index]['start_date']);
+            $start = \Carbon\Carbon::parse(date(now()));
             $end = \Carbon\Carbon::parse($this->contracts[$index]['end_date']);
 
             if ($end < $start) {
                 $this->contracts[$index]['duration'] = '❌ วันที่สิ้นสุดน้อยกว่าวันเริ่ม';
                 return;
             }
-
             $diff = $start->diff($end);
 
             $years = $diff->y;

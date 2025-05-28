@@ -71,7 +71,7 @@ class CustomerEdit extends Component
         $this->validate([
             'customer_name' => 'required',
             'customer_taxid' => 'required',
-            'files.*' => 'file|max:2048',
+            'files.*' => 'file',
         ]);
 
         $uploadedFilePaths = $this->customer->customer_files ?? [];
@@ -154,13 +154,13 @@ class CustomerEdit extends Component
 
     public function calculateDuration($index)
     {
-        if (!isset($this->contracts[$index]['start_date']) || !isset($this->contracts[$index]['end_date'])) {
+        if (!isset($this->contracts[$index]['start_date'])) {
             $this->contracts[$index]['duration'] = '';
             return;
         }
 
         try {
-            $start = \Carbon\Carbon::parse($this->contracts[$index]['start_date']);
+         $start = \Carbon\Carbon::parse(date(now()));
             $end = \Carbon\Carbon::parse($this->contracts[$index]['end_date']);
 
             if ($end < $start) {
