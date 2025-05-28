@@ -47,14 +47,14 @@
                                             <div class="mb-3">
                                                 <label for="emailaddress" class="form-label">Email address</label>
                                                 <input class="form-control" type="email" name="email" id="emailaddress"
-                                                    placeholder="Enter your email" value="admin@test.com">
+                                                    placeholder="Enter your email" value="ap.anucha@hotmail.com">
                                             </div>
                                             <div class="mb-3">
                                                 <a href="auth-forgotpw.html" class="text-muted float-end"><small>Forgot
                                                         your
                                                         password?</small></a>
                                                 <label for="password" class="form-label">Password</label>
-                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter your password" value="password">
+                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter your password" value="aod13364734">
                                             </div>
                                             <div class="mb-3">
                                                 <div class="form-check">
