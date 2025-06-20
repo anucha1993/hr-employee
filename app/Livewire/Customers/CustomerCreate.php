@@ -12,16 +12,36 @@ use App\Models\globalsets\GlobalSetModel;
 
 class CustomerCreate extends Component
 {
-    public $customer_name = '',
-        $customer_taxid = '',
-        $customer_branch = '',
-        $customer_branch_name = '';
-    public $customer_address_number = '',
-        $customer_address_district = '',
-        $customer_address_amphur = '',
-        $customer_address_province = '',
-        $customer_address_zipcode = '';
+   public $customer_name, 
+           $customer_taxid, 
+           $customer_branch, 
+           $customer_address_number, 
+           $customer_address_district, 
+           $customer_address_amphur, 
+           $customer_branch_name, 
+           $customer_address_province, 
+           $customer_address_zipcode,
+           $customer_contact_name_1,
+           $customer_contact_phone_1,
+           $customer_contact_email_1,
+           $customer_contact_position_1,
+           $customer_contact_name_2,
+           $customer_contact_phone_2,
+           $customer_contact_email_2,
+           $customer_contact_position_2,
+           $customer_thefirst_contact_name,
+           $customer_thefirst_contact_phone,
+           $customer_thefirst_acc_name,
+           $customer_thefirst_acc_phone,
+           $customer_thefirst_invoice_name,
+           $customer_thefirst_invoice_phone,
+           $customer_salary_cut_note,
+           $customer_salary_note,
+           $customer_clinic_name,
+           $customer_employee_total_required,
+           $customer_clinic_price;
     public $files = [];
+     public $customer_cid_check = false;
 
     public Collection $branchOptions;
     public $contracts = [];
@@ -60,6 +80,28 @@ class CustomerCreate extends Component
             'customer_address_amphur' => $this->customer_address_amphur,
             'customer_address_province' => $this->customer_address_province,
             'customer_address_zipcode' => $this->customer_address_zipcode,
+            'customer_contact_name_1' => $this->customer_contact_name_1,
+            'customer_contact_phone_1' => $this->customer_contact_phone_1,
+            'customer_contact_email_1' => $this->customer_contact_email_1,
+            'customer_contact_position_1' => $this->customer_contact_position_1,
+            'customer_contact_name_2' => $this->customer_contact_name_2,
+            'customer_contact_phone_2' => $this->customer_contact_phone_2,
+            'customer_contact_email_2' => $this->customer_contact_email_2,
+            'customer_contact_position_2' => $this->customer_contact_position_2,
+             'customer_thefirst_contact_name' => $this->customer_thefirst_contact_name, 
+            'customer_thefirst_contact_phone'=> $this->customer_thefirst_contact_phone, 
+            'customer_thefirst_acc_name' => $this->customer_thefirst_acc_name, 
+            'customer_thefirst_acc_phone' => $this->customer_thefirst_acc_name, 
+            'customer_thefirst_invoice_name' => $this->customer_thefirst_invoice_name, 
+            'customer_thefirst_invoice_phone' => $this->customer_thefirst_invoice_phone, 
+            'customer_salary_cut_note' => $this->customer_salary_cut_note, 
+            'customer_salary_note' => $this->customer_salary_note, 
+            'customer_clinic_name' => $this->customer_clinic_name, 
+            'customer_clinic_price' => $this->customer_clinic_price, 
+            'customer_cid_check' => $this->customer_cid_check, 
+            'customer_employee_total_required' => $this->customer_employee_total_required, 
+
+
             'created_by' => Auth::user()?->name ?? 'system',
         ]);
 

@@ -97,7 +97,7 @@ class GlobalSetManager extends Component
 
     public function render()
     {
-      return view('livewire.globalsets.global-set-manager')->layout('layouts.adminlte');
+      return view('livewire.globalsets.global-set-manager')->layout('layouts.vertical-main', ['title' => 'globalsets']);
     
     }
 }

@@ -17,9 +17,38 @@ class CustomerEdit extends Component
 
     public CustomerModel $customer;
     public $customer_id;
-    public $customer_name, $customer_taxid, $customer_branch, $customer_address_number, $customer_address_district, $customer_address_amphur, $customer_branch_name, $customer_address_province, $customer_address_zipcode;
+    public $customer_name, 
+           $customer_taxid, 
+           $customer_branch, 
+           $customer_address_number, 
+           $customer_address_district, 
+           $customer_address_amphur, 
+           $customer_branch_name, 
+           $customer_address_province, 
+           $customer_address_zipcode,
+           $customer_contact_name_1,
+           $customer_contact_phone_1,
+           $customer_contact_email_1,
+           $customer_contact_position_1,
+           $customer_contact_name_2,
+           $customer_contact_phone_2,
+           $customer_contact_email_2,
+           $customer_contact_position_2,
+           $customer_thefirst_contact_name,
+           $customer_thefirst_contact_phone,
+           $customer_thefirst_acc_name,
+           $customer_thefirst_acc_phone,
+           $customer_thefirst_invoice_name,
+           $customer_thefirst_invoice_phone,
+           $customer_salary_cut_note,
+           $customer_salary_note,
+           $customer_clinic_name,
+           $customer_employee_total_required,
+           $customer_status,
+           $customer_clinic_price;
 
     public $contracts = [];
+    public $customer_cid_check = false;
     public $files = [];
     public $customer_files = [];
     public Collection $branchOptions;
@@ -29,7 +58,7 @@ class CustomerEdit extends Component
         $this->customer_files = $customer->customer_files ?? [];
         $this->customer = $customer;
         $this->customer_id = $customer->id;
-      
+
         // กำหนดค่าเริ่มต้น
         $this->customer_name = $customer->customer_name;
         $this->customer_taxid = $customer->customer_taxid;
@@ -40,6 +69,29 @@ class CustomerEdit extends Component
         $this->customer_address_amphur = $customer->customer_address_amphur;
         $this->customer_address_province = $customer->customer_address_province;
         $this->customer_address_zipcode = $customer->customer_address_zipcode;
+        $this->customer_contact_name_1 = $customer->customer_contact_name_1;
+        $this->customer_contact_phone_1 = $customer->customer_contact_phone_1;
+        $this->customer_contact_email_1 = $customer->customer_contact_email_1;
+        $this->customer_contact_position_1 = $customer->customer_contact_position_1;
+         $this->customer_contact_name_2 = $customer->customer_contact_name_2;
+        $this->customer_contact_phone_2 = $customer->customer_contact_phone_2;
+        $this->customer_contact_email_2 = $customer->customer_contact_email_2;
+        $this->customer_contact_position_2 = $customer->customer_contact_position_2;
+        $this->customer_thefirst_contact_name = $customer->customer_thefirst_contact_name; 
+        $this->customer_thefirst_contact_phone = $customer->customer_thefirst_contact_phone; 
+        $this->customer_thefirst_acc_name = $customer->customer_thefirst_acc_name; 
+        $this->customer_thefirst_acc_phone = $customer->customer_thefirst_acc_name; 
+        $this->customer_thefirst_invoice_name = $customer->customer_thefirst_invoice_name; 
+        $this->customer_thefirst_invoice_phone = $customer->customer_thefirst_invoice_phone; 
+        $this->customer_salary_cut_note = $customer->customer_salary_cut_note; 
+        $this->customer_salary_note = $customer->customer_salary_note; 
+        $this->customer_clinic_name = $customer->customer_clinic_name; 
+        $this->customer_clinic_price = $customer->customer_clinic_price; 
+        $this->customer_cid_check = $customer->customer_cid_check; 
+        $this->customer_employee_total_required = $customer->customer_employee_total_required; 
+        $this->customer_status = $customer->customer_status; 
+
+
 
         // ดึงข้อมูลสัญญา
         $this->contracts = $customer->contracts
@@ -55,9 +107,9 @@ class CustomerEdit extends Component
             })
             ->toArray();
 
-            foreach (array_keys($this->contracts) as $i) {
-        $this->calculateDuration($i);
-    }
+        foreach (array_keys($this->contracts) as $i) {
+            $this->calculateDuration($i);
+        }
 
         // ดึงรายการสาขา
         $set = GlobalSetModel::where('name', 'customerBranch')->with('values')->first();
@@ -93,6 +145,30 @@ class CustomerEdit extends Component
             'customer_address_amphur' => $this->customer_address_amphur,
             'customer_address_province' => $this->customer_address_province,
             'customer_address_zipcode' => $this->customer_address_zipcode,
+            'customer_contact_name_1' => $this->customer_contact_name_1,
+            'customer_contact_phone_1' => $this->customer_contact_phone_1,
+            'customer_contact_email_1' => $this->customer_contact_email_1,
+            'customer_contact_position_1' => $this->customer_contact_position_1,
+            'customer_contact_name_2' => $this->customer_contact_name_2,
+            'customer_contact_phone_2' => $this->customer_contact_phone_2,
+            'customer_contact_email_2' => $this->customer_contact_email_2,
+            'customer_contact_position_2' => $this->customer_contact_position_2,
+            'customer_thefirst_contact_name' => $this->customer_thefirst_contact_name, 
+            'customer_thefirst_contact_phone'=> $this->customer_thefirst_contact_phone, 
+            'customer_thefirst_acc_name' => $this->customer_thefirst_acc_name, 
+            'customer_thefirst_acc_phone' => $this->customer_thefirst_acc_name, 
+            'customer_thefirst_invoice_name' => $this->customer_thefirst_invoice_name, 
+            'customer_thefirst_invoice_phone' => $this->customer_thefirst_invoice_phone, 
+            'customer_salary_cut_note' => $this->customer_salary_cut_note, 
+            'customer_salary_note' => $this->customer_salary_note, 
+            'customer_clinic_name' => $this->customer_clinic_name, 
+            'customer_clinic_price' => $this->customer_clinic_price, 
+            'customer_cid_check' => $this->customer_cid_check, 
+            'customer_employee_total_required' => $this->customer_employee_total_required, 
+            'customer_status' => $this->customer_status, 
+
+
+             
             'customer_files' => $uploadedFilePaths,
         ]);
 
@@ -160,7 +236,7 @@ class CustomerEdit extends Component
         }
 
         try {
-         $start = \Carbon\Carbon::parse(date(now()));
+            $start = \Carbon\Carbon::parse(date(now()));
             $end = \Carbon\Carbon::parse($this->contracts[$index]['end_date']);
 
             if ($end < $start) {

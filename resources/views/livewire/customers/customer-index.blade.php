@@ -34,6 +34,7 @@
                                 <th>สาขา</th>
                                 <th>จังหวัด</th>
                                 <th>วันที่เหลือ</th>
+                                <th>สถานะ</th>
                                 <th>ดำเนินการ</th>
                             </tr>
                         </thead>
@@ -45,6 +46,7 @@
                                     <td>{{ $customer->customer_taxid }}</td>
                                     <td>{{ $customer->branch->value }}</td>
                                     <td>{{ $customer->customer_address_province }}</td>
+
                                     <td>
                                         @if ($customer->latestContract)
                                             @php
@@ -63,6 +65,7 @@
                                             -
                                         @endif
                                     </td>
+                                    <td>{!! getStatusCutomerBadge($customer->customer_status) !!}</td>
                                     <td>
                                         {{-- <a href="#" class="btn btn-sm btn-info">ดู</a> --}}
                                         <a href="{{ route('customer.edit', $customer->id) }}"

@@ -90,6 +90,133 @@
             </div>
             <hr>
             <div class="row">
+                <h5 class="text-black">ข้อมูลการติดต่อ</h5>
+                  <div class="col-md-6 mb-2">
+                    <label for="">ชื่อผู้ติดต่อ</label>
+                    <input type="text" wire:model="customer_contact_name_1" class="form-control"
+                        placeholder="ชื่อผู้ติดต่อ">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">เบอร์ติดต่อ</label>
+                    <input type="text" wire:model="customer_contact_phone_1" class="form-control"
+                        placeholder="ชื่อผู้ติดต่อ">
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="">อีเมล</label>
+                    <input type="email" wire:model="customer_contact_email_1" class="form-control"
+                        placeholder="email@gmail.com">
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="">ตำแหน่ง</label>
+                    <input type="text" wire:model="customer_contact_position_1" class="form-control"
+                        placeholder="ตำแหน่ง">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">ชื่อผู้ติดต่อ (สำรอง)</label>
+                    <input type="text" wire:model="customer_contact_name_2" class="form-control"
+                        placeholder="ชื่อผู้ติดต่อ">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">เบอร์ติดต่อ (สำรอง)</label>
+                    <input type="text" wire:model="customer_contact_phone_2" class="form-control"
+                        placeholder="ชื่อผู้ติดต่อ">
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="">อีเมล (สำรอง)</label>
+                    <input type="email" wire:model="customer_contact_email_2" class="form-control"
+                        placeholder="email@gmail.com">
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="">ตำแหน่ง (สำรอง)</label>
+                    <input type="text" wire:model="customer_contact_position_2" class="form-control"
+                        placeholder="ตำแหน่ง">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+
+            <h5 class="text-black">ข้อมูลงานบัญชี </h5>
+                  <div class="col-md-6 mb-2">
+                    <label for="">เจ้าหน้าที่ประสานงานลูกค้า (เดอะเฟิร์ส)</label>
+                    <input type="text" wire:model="customer_thefirst_contact_name" class="form-control"
+                        placeholder="ชื่อผู้ติดต่อ">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">เบอร์-เจ้าหน้าที่ประสานงานลูกค้า (เดอะเฟิร์ส)</label>
+                    <input type="text" wire:model="customer_thefirst_contact_phone" class="form-control"
+                        placeholder="+66">
+                </div>
+
+                  <div class="col-md-6 mb-2">
+                    <label for="">เจ้าหน้าที่เงินเดือน (เดอะเฟิร์ส)</label>
+                    <input type="text" wire:model="customer_thefirst_acc_name" class="form-control"
+                        placeholder="เจ้าหน้าที่เงินเดือน">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">เบอร์-เจ้าหน้าที่เงินเดือน (เดอะเฟิร์ส)</label>
+                    <input type="text" wire:model="customer_thefirst_acc_phone" class="form-control"
+                        placeholder="+66">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">เจ้าหน้าที่วางบิล (เดอะเฟิร์ส)</label>
+                    <input type="text" wire:model="customer_thefirst_invoice_name" class="form-control"
+                        placeholder="เจ้าหน้าที่เงินเดือน">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">เบอร์-เจ้าหน้าที่วางบิล (เดอะเฟิร์ส)</label>
+                    <input type="text" wire:model="customer_thefirst_invoice_phone" class="form-control"
+                        placeholder="+66">
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="">การตัดรอบเงินเดือน</label>
+                    <input type="text" wire:model="customer_salary_cut_note" class="form-control"
+                        placeholder="การตัดรอบเงินเดือน">
+                </div>
+                  <div class="col-md-6 mb-2">
+                    <label for="">การจ่ายเงินเดือน</label>
+                    <input type="text" wire:model="customer_salary_note" class="form-control"
+                        placeholder="การตัดรอบเงินเดือน">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">ชื่อคลินิกที่ตรวจสุขภาพ</label>
+                    <input type="text" wire:model="customer_clinic_name" class="form-control"
+                        placeholder="การตัดรอบเงินเดือน">
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="">ราคาค่าตรวจสุขภาพ</label>
+                    <input type="number" wire:model="customer_clinic_price" class="form-control" step="0.1"
+                        placeholder="0.00">
+                </div>
+                 <div class="col-md-6 mb-2 ">
+                    <label for="">ตรวจประวัติอาชญากรรม </label> <br>
+
+                    <input type="checkbox" wire:model="customer_cid_check">
+                    <label for="">ตรวจสอบ</label>
+                </div>
+                                
+            </div>
+            <hr>
+             <div class="row">
+
+            {{-- <h5 class="text-black">จำนวนพนักงานที่ต้องการ </h5> --}}
+                  <div class="col-md-6 mb-2">
+                    <label for="">จำนวนพนักงานที่ต้องการ : จำนวนคน</label>
+                    <input type="number" wire:model="customer_employee_total_required" class="form-control" step="1"
+                        placeholder="1">
+                </div>
+                 <div class="col-md-6 mb-2">
+                    <label for="">สถานะพนักงาน</label>
+                     <select wire:model="customer_status" class="form-select">
+                       <option value="">--เลือกสถานะ--</option>
+                        <option value="1">ใช้งาน</option>
+                        <option value="0">ปิดใช้งาน</option>
+                     </select>
+                </div>
+             </div>
+             
+            <hr>
+
+            <div class="row">
                 <div class="col-md-12 mb-2">
                     <label>สัญญาจ้าง</label>
                     <a href="#" class="btn btn-sm btn-primary" wire:click.prevent="addContract">
@@ -108,6 +235,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach ($contracts as $index => $contract)
                                 <tr>
                                     <td>
@@ -140,6 +268,7 @@
                 </div>
                 <hr>
 
+
                 <div class="card">
                     <div class="card-header">
                         <h4 class="header-title"> Files Upload</h4>
@@ -162,7 +291,7 @@
                             <div class="mt-3">
                                 <label class="fw-bold">ไฟล์ที่แนบไว้แล้ว:</label>
                                 <ul class="list-group mt-2">
-                                    @foreach ($customer->customer_files as $path)
+                                    @foreach ($customer->customer_files as $index => $path)
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <a href="{{ asset('storage/' . $path) }}" target="_blank">
                                                 {{ basename($path) }}
@@ -176,6 +305,7 @@
                                                 type="button" class="btn btn-sm btn-danger">
                                                 ลบ
                                             </button>
+
 
                                         </li>
                                     @endforeach
