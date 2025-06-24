@@ -234,9 +234,9 @@
 
                                     <!-- แสดงไฟล์ที่อัปโหลดแล้ว (optional) -->
                                     @if ($emp_files)
-                                        <ul class="mt-2">
+                                       <ul class="list-group mt-2 mb-1">
                                             @foreach ($emp_files as $index => $file)
-                                                <li class="">
+                                               <li class="list-group-item d-flex justify-content-between align-items-center">
                                                     @if (is_object($file))
                                                         {{ $file->getClientOriginalName() }}
                                                     @else

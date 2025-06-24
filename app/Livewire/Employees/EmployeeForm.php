@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Carbon;
 use App\Models\customers\CustomerModel;
-use App\Models\employees\EmployeeModel;
+use App\Models\Employees\EmployeeModel;
 use Illuminate\Support\Facades\Storage;
 use App\Models\globalsets\GlobalSetModel;
 use App\Models\globalsets\GlobalSetValueModel;
