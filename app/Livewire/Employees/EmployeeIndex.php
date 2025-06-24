@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Models\customers\CustomerModel;
-use App\Models\employees\EmployeeModel;
+use App\Models\Employees\EmployeeModel;
 use App\Models\globalsets\GlobalSetModel;
 
 class EmployeeIndex extends Component
