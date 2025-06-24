@@ -8,9 +8,9 @@
             <div class="card-header d-flex justify-content-between ">
                 <h3 class="card-title">Global Sets</h3>
                 <!-- ปุ่มเปิด Modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#globalSetModal">
-                    <i class="fa fa-add"></i> เพิ่ม
-                </button>
+              <button type="button" class="btn btn-primary" wire:click="create" data-toggle="modal" data-target="#globalSetModal">
+    <i class="fa fa-add"></i> เพิ่ม
+</button>
             </div>
             <div class="card-body">
                 <table class="table table">
@@ -52,9 +52,9 @@
                     <form wire:submit.prevent="save">
                         <div class="modal-header">
                             <h5 class="modal-title" id="globalSetModalLabel">{{ $editingId ? 'แก้ไข' : 'เพิ่ม' }} Global Set</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button> --}}
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
@@ -67,14 +67,14 @@
                                 <textarea wire:model.defer="description" class="form-control"></textarea>
                                 @error('description') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
-                            <label class="font-weight-bold">Global Set Values</label>
+                            <label class="font-weight-bold mt-2">Global Set Values</label>
                             @foreach($values as $index => $value)
-                                <div class="form-row mb-2">
+                                <div class="row mb-2">
                                     <div class="col">
                                         <input type="text" wire:model="values.{{ $index }}.value" class="form-control" placeholder="ค่า">
                                     </div>
                                     <div class="col">
-                                        <select wire:model="values.{{ $index }}.status" class="form-control">
+                                        <select wire:model="values.{{ $index }}.status" class="form-select">
                                             <option value="Enable">Enable</option>
                                             <option value="Disable">Disable</option>
                                         </select>
@@ -87,8 +87,8 @@
                             <button type="button" wire:click="addValue" class="btn btn-sm btn-secondary">+ เพิ่มค่า</button>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-primary">บันทึก</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                            <button type="submit" class="btn btn-primary close">บันทึก</button>
                         </div>
                     </form>
                 </div>

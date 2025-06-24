@@ -40,7 +40,31 @@
                     <i class="ri-dashboard-3-line"></i>
                     <span>ข้อมูลลูกค้า </span>
                 </a>
+                
             </li>
+            <li>
+                 <a href="{{ route('employees.index') }}" class="side-nav-link">
+                    <i class="ri-compasses-2-line"></i>
+                    <span>ข้อมูลผู้สมัคร </span>
+                </a>
+            </li>
+             <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages"
+                    class="side-nav-link">
+                    <i class="ri-pages-line"></i>
+                    <span>ตั้งค่าระบบ </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarPages">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('global-sets') }}">สถานะข้อมูล</a>
+                        </li>
+                        <li>
+                        </li>
+                    </ul>
+                </div>
+            
 
             {{-- <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages"
