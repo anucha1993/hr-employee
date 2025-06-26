@@ -37,24 +37,27 @@
             border-radius: 15px 15px 0 0 !important;
         }
         .form-control, .form-select {
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            padding: 8px 12px;
             transition: all 0.3s ease;
+            font-size: 14px;
         }
         .form-control:focus, .form-select:focus {
             border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.2);
         }
         .input-group-text {
-            border-radius: 10px 0 0 10px;
-            border: 2px solid #e9ecef;
+            border-radius: 8px 0 0 8px;
+            border: 1px solid #e9ecef;
             border-right: none;
-            background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+            background: #f8f9fa;
+            padding: 8px 12px;
+            font-size: 14px;
         }
         .input-group .form-control {
             border-left: none;
-            border-radius: 0 10px 10px 0;
+            border-radius: 0 8px 8px 0;
         }
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -74,15 +77,16 @@
             margin-bottom: 8px;
         }
         .section-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            margin-right: 15px;
+            margin-right: 12px;
+            font-size: 16px;
         }
         .status-badge {
             padding: 8px 16px;
@@ -93,9 +97,9 @@
             letter-spacing: 0.5px;
         }
         .divider {
-            height: 2px;
+            height: 1px;
             background: linear-gradient(90deg, transparent 0%, #dee2e6 50%, transparent 100%);
-            margin: 30px 0;
+            margin: 20px 0;
         }
     </style>
 
@@ -103,45 +107,45 @@
         <div class="row justify-content-center">
             <div class="col-12 col-xl-10">
                 <div class="modern-card">
-                    <div class="gradient-header text-white py-5 position-relative">
+                    <div class="gradient-header text-white py-4 position-relative">
                         <div class="container-fluid">
                             <div class="d-flex align-items-center position-relative">
-                                <div class="section-icon me-4">
-                                    <i class="mdi mdi-account-plus fs-4"></i>
+                                <div class="section-icon me-3">
+                                    👤
                                 </div>
                                 <div>
-                                    <h1 class="mb-2 fw-bold">ข้อมูลพนักงาน</h1>
+                                    <h2 class="mb-1 fw-bold">ข้อมูลพนักงาน</h2>
                                     <p class="mb-0 opacity-90 fs-6">จัดการข้อมูลพนักงานอย่างครบถ้วนและมีประสิทธิภาพ</p>
                                 </div>
                                 <div class="ms-auto d-none d-md-block">
                                     <div class="d-flex align-items-center">
                                         <div class="status-badge bg-success bg-opacity-20 text-white me-3">
-                                            <i class="mdi mdi-check-circle me-1"></i>ระบบออนไลน์
+                                            ✅ ระบบออนไลน์
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body p-2">
+                    <div class="card-body p-3">
                         <form wire:submit.prevent="save" class="needs-validation" novalidate>
                             
                             <!-- ข้อมูลส่วนตัว -->
-                            <div class="section-card mb-1">
-                                <div class="section-header p-3">
+                            <div class="section-card mb-3">
+                                <div class="section-header p-2">
                                     <div class="d-flex align-items-center">
                                         <div class="section-icon">
-                                            <i class="mdi mdi-account-circle"></i>
+                                            👤
                                         </div>
-                                        <h3 class="mb-0 fw-bold text-primary">ข้อมูลส่วนตัว</h3>
+                                        <h4 class="mb-0 fw-bold text-primary">ข้อมูลส่วนตัว</h4>
                                     </div>
                                 </div>
-                                <div class="card-body p-2">
-                                    <div class="row g-4">
+                                <div class="card-body p-3">
+                                    <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">ชื่อ-นามสกุล <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text"><i class="mdi mdi-account"></i></span>
+                                                <span class="input-group-text">👤</span>
                                                 <input type="text" wire:model.defer="emp_name" class="form-control"
                                                     placeholder="กรอกชื่อ-นามสกุล">
                                             </div>
@@ -152,7 +156,7 @@
                                         <div class="col-md-6">
                                             <label class="form-label">เบอร์โทรติดต่อ <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text"><i class="mdi mdi-phone"></i></span>
+                                                <span class="input-group-text">📱</span>
                                                 <input type="text" wire:model.defer="emp_phone" class="form-control" required
                                                     placeholder="กรอกเบอร์โทร">
                                             </div>
@@ -226,17 +230,17 @@
                             <div class="divider"></div>
 
                             <!-- ข้อมูลการทำงาน -->
-                            <div class="section-card mb-1">
-                                <div class="section-header p-3">
+                            <div class="section-card mb-3">
+                                <div class="section-header p-2">
                                     <div class="d-flex align-items-center">
                                         <div class="section-icon">
-                                            <i class="mdi mdi-briefcase"></i>
+                                            💼
                                         </div>
-                                        <h3 class="mb-0 fw-bold text-primary">ข้อมูลการทำงาน</h3>
+                                        <h4 class="mb-0 fw-bold text-primary">ข้อมูลการทำงาน</h4>
                                     </div>
                                 </div>
-                                <div class="card-body p-2">
-                                    <div class="row g-4">
+                                <div class="card-body p-3">
+                                    <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">ชื่อเจ้าหน้าที่สรรหา</label>
                                             <div class="input-group">
@@ -313,17 +317,17 @@
                             <div class="divider"></div>
 
                             <!-- สัญญาจ้าง -->
-                            <div class="section-card mb-1">
-                                <div class="section-header p-3">
+                            <div class="section-card mb-3">
+                                <div class="section-header p-2">
                                     <div class="d-flex align-items-center">
                                         <div class="section-icon">
-                                            <i class="mdi mdi-file-document"></i>
+                                            📄
                                         </div>
-                                        <h3 class="mb-0 fw-bold text-primary">ข้อมูลสัญญาจ้าง</h3>
+                                        <h4 class="mb-0 fw-bold text-primary">ข้อมูลสัญญาจ้าง</h4>
                                     </div>
                                 </div>
-                                <div class="card-body p-2">
-                                    <div class="row g-4">
+                                <div class="card-body p-3">
+                                    <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">ประเภทสัญญาจ้าง</label>
                                             <div class="input-group">
@@ -372,17 +376,17 @@
                             <div class="divider"></div>
 
                             <!-- ข้อมูลเพิ่มเติม -->
-                            <div class="section-card mb-1">
-                                <div class="section-header p-3">
+                            <div class="section-card mb-3">
+                                <div class="section-header p-2">
                                     <div class="d-flex align-items-center">
                                         <div class="section-icon">
-                                            <i class="mdi mdi-information"></i>
+                                            ℹ️
                                         </div>
-                                        <h3 class="mb-0 fw-bold text-primary">ข้อมูลเพิ่มเติม</h3>
+                                        <h4 class="mb-0 fw-bold text-primary">ข้อมูลเพิ่มเติม</h4>
                                     </div>
                                 </div>
-                                <div class="card-body p-2">
-                                    <div class="row g-4">
+                                <div class="card-body p-3">
+                                    <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">สิทธิรักษาพยาบาล</label>
                                             <div class="input-group">
@@ -427,18 +431,18 @@
                             <div class="divider"></div>
 
                             <!-- ผู้ติดต่อฉุกเฉิน -->
-                            <div class="section-card mb-1">
-                                <div class="section-header p-3">
+                            <div class="section-card mb-3">
+                                <div class="section-header p-2">
                                     <div class="d-flex align-items-center">
                                         <div class="section-icon">
-                                            <i class="mdi mdi-phone-alert"></i>
+                                            🚨
                                         </div>
-                                        <h3 class="mb-0 fw-bold text-primary">ผู้ติดต่อฉุกเฉิน</h3>
+                                        <h4 class="mb-0 fw-bold text-primary">ผู้ติดต่อฉุกเฉิน</h4>
                                     </div>
                                 </div>
-                                <div class="card-body p-2">
+                                <div class="card-body p-3">
                                     @foreach ($emp_emergency_contacts as $index => $contact)
-                                    <div class="row g-4 mb-3 pb-3 border-bottom">
+                                    <div class="row g-3 mb-3 pb-3 border-bottom">
                                         <div class="col-lg-4">
                                             <label class="form-label">ชื่อผู้ติดต่อฉุกเฉิน</label>
                                             <div class="input-group">
@@ -471,16 +475,16 @@
                             <div class="divider"></div>
 
                             <!-- ไฟล์แนบ -->
-                            <div class="section-card mb-1">
-                                <div class="section-header p-3">
+                            <div class="section-card mb-3">
+                                <div class="section-header p-2">
                                     <div class="d-flex align-items-center">
                                         <div class="section-icon">
-                                            <i class="mdi mdi-file-multiple"></i>
+                                            📎
                                         </div>
-                                        <h3 class="mb-0 fw-bold text-primary">ไฟล์แนบ</h3>
+                                        <h4 class="mb-0 fw-bold text-primary">ไฟล์แนบ</h4>
                                     </div>
                                 </div>
-                                <div class="card-body p-2">
+                                <div class="card-body p-3">
                                     <div class="mb-3">
                                         <label class="form-label">แนบไฟล์เอกสาร</label>
                                         <input type="file" wire:model="emp_files" class="form-control" multiple>
@@ -518,10 +522,9 @@
                             </div>
 
                             <!-- ปุ่มบันทึก -->
-                            <div class="text-center py-4">
-                                <button type="submit" class="btn btn-primary btn-lg px-5">
-                                    <i class="mdi mdi-content-save me-2"></i>
-                                    บันทึกข้อมูลพนักงาน
+                            <div class="text-center py-3">
+                                <button type="submit" class="btn btn-primary btn-lg px-4">
+                                    💾 บันทึกข้อมูลพนักงาน
                                 </button>
                             </div>
                         </form>
