@@ -94,3 +94,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('livewire:initialized', function () {
+        // เมื่อบันทึกสำเร็จ ให้ปิด modal
+        @this.on('closeModal', () => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('globalSetModal'));
+            if (modal) {
+                modal.hide();
+            }
+        });
+    });
+</script>

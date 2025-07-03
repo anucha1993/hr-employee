@@ -83,9 +83,9 @@ class GlobalSetManager extends Component
             ]);
         }
 
-        $this->showModal = false;
         $this->loadSets();
         session()->flash('message', 'บันทึกข้อมูลสำเร็จ!');
+        $this->dispatch('closeModal');
     }
 
     public function delete($id)
