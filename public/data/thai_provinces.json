@@ -1,0 +1,174 @@
+[
+  {
+    "id": 1,
+    "name_th": "กรุงเทพมหานคร",
+    "name_en": "Bangkok",
+    "code": "10",
+    "region": "กลาง",
+    "amphures": [
+      {
+        "id": 1,
+        "name_th": "เขตพระนคร",
+        "name_en": "Phra Nakhon",
+        "code": "1001",
+        "province_id": 1,
+        "districts": [
+          {
+            "id": 1,
+            "name_th": "พระบรมมหาราชวัง",
+            "name_en": "Phra Borom Maha Ratchawang",
+            "code": "100101",
+            "amphure_id": 1,
+            "zip_code": "10200"
+          },
+          {
+            "id": 2,
+            "name_th": "วังบูรพาภิรมย์",
+            "name_en": "Wang Burapha Phirom",
+            "code": "100102",
+            "amphure_id": 1,
+            "zip_code": "10200"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name_th": "เขตดุสิต",
+        "name_en": "Dusit",
+        "code": "1002",
+        "province_id": 1,
+        "districts": [
+          {
+            "id": 3,
+            "name_th": "ดุสิต",
+            "name_en": "Dusit",
+            "code": "100201",
+            "amphure_id": 2,
+            "zip_code": "10300"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name_th": "สมุทรปราการ",
+    "name_en": "Samut Prakan",
+    "code": "11",
+    "region": "กลาง",
+    "amphures": [
+      {
+        "id": 3,
+        "name_th": "เมืองสมุทรปราการ",
+        "name_en": "Mueang Samut Prakan",
+        "code": "1101",
+        "province_id": 2,
+        "districts": [
+          {
+            "id": 4,
+            "name_th": "ปากน้ำ",
+            "name_en": "Pak Nam",
+            "code": "110101",
+            "amphure_id": 3,
+            "zip_code": "10270"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name_th": "นนทบุรี",
+    "name_en": "Nonthaburi",
+    "code": "12",
+    "region": "กลาง",
+    "amphures": [
+      {
+        "id": 4,
+        "name_th": "เมืองนนทบุรี",
+        "name_en": "Mueang Nonthaburi",
+        "code": "1201",
+        "province_id": 3,
+        "districts": [
+          {
+            "id": 5,
+            "name_th": "สวนใหญ่",
+            "name_en": "Suan Yai",
+            "code": "120101",
+            "amphure_id": 4,
+            "zip_code": "11000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name_th": "เชียงใหม่",
+    "name_en": "Chiang Mai",
+    "code": "50",
+    "region": "เหนือ",
+    "amphures": [
+      {
+        "id": 5,
+        "name_th": "เมืองเชียงใหม่",
+        "name_en": "Mueang Chiang Mai",
+        "code": "5001",
+        "province_id": 4,
+        "districts": [
+          {
+            "id": 6,
+            "name_th": "ศรีภูมิ",
+            "name_en": "Si Phum",
+            "code": "500101",
+            "amphure_id": 5,
+            "zip_code": "50200"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name_th": "ชลบุรี",
+    "name_en": "Chon Buri",
+    "code": "20",
+    "region": "ตะวันออก",
+    "amphures": [
+      {
+        "id": 6,
+        "name_th": "เมืองชลบุรี",
+        "name_en": "Mueang Chon Buri",
+        "code": "2001",
+        "province_id": 5,
+        "districts": [
+          {
+            "id": 7,
+            "name_th": "บางปลาสร้อย",
+            "name_en": "Bang Pla Soi",
+            "code": "200101",
+            "amphure_id": 6,
+            "zip_code": "20000"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "name_th": "พัทยา",
+        "name_en": "Pattaya",
+        "code": "2002",
+        "province_id": 5,
+        "districts": [
+          {
+            "id": 8,
+            "name_th": "หนองปรือ",
+            "name_en": "Nong Prue",
+            "code": "200201",
+            "amphure_id": 7,
+            "zip_code": "20150"
+          }
+        ]
+      }
+    ]
+  }
+]

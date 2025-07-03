@@ -30,6 +30,18 @@ class CustomerModel extends Model
     'customer_status',
     'customer_branch', 'customer_branch_name', 'customer_address_number', 'customer_address_district', 'customer_address_amphur', 'customer_address_province', 'customer_address_zipcode', 'customer_contact_name_1', 'customer_contact_phone_1', 'customer_contact_email_1', 'customer_contact_position_1', 'customer_contact_name_2', 'customer_contact_phone_2', 'customer_contact_email_2', 'customer_contact_position_2', 'customer_files', 'created_by'];
 
+    /**
+     * Get the customer files attribute.
+     * Ensures this attribute is always an array, never null.
+     *
+     * @param  mixed  $value
+     * @return array
+     */
+    public function getCustomerFilesAttribute($value)
+    {
+        return is_null($value) ? [] : $value;
+    }
+
     public function contracts()
     {
         return $this->hasMany(contractModel::class, 'customer_id');

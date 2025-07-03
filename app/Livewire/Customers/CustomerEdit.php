@@ -56,6 +56,7 @@ class CustomerEdit extends Component
     public function mount(CustomerModel $customer)
     {
         $this->customer_files = $customer->customer_files ?? [];
+        $customer->customer_files = $customer->customer_files ?? [];
         $this->customer = $customer;
         $this->customer_id = $customer->id;
 
@@ -269,6 +270,6 @@ class CustomerEdit extends Component
 
     public function render()
     {
-        return view('livewire.customers.customer-edit')->layout('layouts.vertical-main', ['title' => 'แก้ไขลูกค้า']);
+        return view('livewire.customers.customer-edit')->layout('layouts.vertical-main', ['title' => 'customer']);;
     }
 }

@@ -205,7 +205,7 @@
                         placeholder="1">
                 </div>
                  <div class="col-md-6 mb-2">
-                    <label for="">สถานะพนักงาน</label>
+                    <label for="">สถานะการใช้งาน </label>
                      <select wire:model="customer_status" class="form-select">
                        <option value="">--เลือกสถานะ--</option>
                         <option value="1">ใช้งาน</option>
@@ -287,7 +287,7 @@
                             </div>
                         </div>
 
-                        @if (!empty($customer->customer_files))
+                        @if (isset($customer->customer_files) && is_array($customer->customer_files) && !empty($customer->customer_files))
                             <div class="mt-3">
                                 <label class="fw-bold">ไฟล์ที่แนบไว้แล้ว:</label>
                                 <ul class="list-group mt-2">

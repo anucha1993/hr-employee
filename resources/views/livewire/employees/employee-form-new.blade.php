@@ -7,7 +7,7 @@
                         <div class="d-flex align-items-center">
                             <i class="mdi mdi-account-plus-outline fs-3 me-3"></i>
                             <div>
-                                <h4 class="card-title mb-0 fw-bold">ข้อมูลพนักงานsss</h4>
+                                <h4 class="card-title mb-0 fw-bold">ข้อมูลพนักงาน</h4>
                                 <p class="mb-0 opacity-75">กรอกข้อมูลพนักงานให้ครบถ้วน</p>
                             </div>
                         </div>
