@@ -730,10 +730,10 @@
         </div>
     </div>
     
-   <script>
+   {{-- <script>
     $('.select2').select2({
         theme: 'bootstrap-5',
        height: '1000px',
     });
-       </script>
+       </script> --}}
 </div>

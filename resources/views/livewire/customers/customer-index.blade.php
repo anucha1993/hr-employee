@@ -13,12 +13,12 @@
         <div class="card">
             <div class="card-header">
                 <h2 class="">รายชื่อลูกค้า</h2>
-                <div class="text-end">
+                <div class="d-flex justify-content-end gap-2">
+                  
                     <a href="{{ route('customer.create') }}" class="btn btn-success">
                         <i class="fa fa-plus"></i> เพิ่มลูกค้าใหม่
                     </a>
                 </div>
-
             </div>
             <div class="card-body">
 
@@ -85,10 +85,14 @@
                         </tbody>
                     </table>
                   <div class="card-footer">
-
-                         {{ $this->customers->links('pagination::bootstrap-5') }}
-
+                        <div class="d-flex justify-content-between align-items-center">
+                            {{ $this->customers->links('pagination::bootstrap-5') }}
+                            
+                            <a href="{{ route('reports.customer-employee') }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fa fa-file-excel"></i> ออกรายงานพนักงาน
+                            </a>
                         </div>
+                    </div>
                 </div>
                 
             </div>

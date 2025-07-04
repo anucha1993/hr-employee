@@ -22,6 +22,20 @@ use App\Livewire\Globalsets\GlobalSetManager;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/global-sets', GlobalSetManager::class)->name('global-sets');
+    
+    // Reports Routes
+    Route::prefix('reports')->name('reports.')->group(function () {
+        // Controller-based routes
+        Route::get('/customer-employee', \App\Livewire\Reports\CustomerEmployeeReport::class)->name('customer-employee');
+        Route::post('/customer-employee/export', [\App\Http\Controllers\Reports\CustomerEmployeeReportController::class, 'export'])->name('customer-employee.export');
+        
+        // Employee Report Routes
+        Route::get('/employee-report', \App\Livewire\Reports\EmployeeReport::class)->name('employee-report');
+        
+        // Labor Demand Report Route
+        Route::get('/labor-demand', \App\Livewire\Reports\LaborDemandReport::class)->name('labor-demand');
+        Route::get('/labor-demand/export', [\App\Http\Controllers\Reports\LaborDemandReportController::class, 'export'])->name('labor-demand.export');
+    });
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/', CustomerIndex::class)->name('index');

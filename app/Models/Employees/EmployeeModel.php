@@ -131,4 +131,12 @@ class EmployeeModel extends Model
     {
         return $this->belongsTo(GlobalSetValueModel::class, 'emp_status', 'id');
     }
+    
+    /**
+     * Get the recruiter relation
+     */
+    public function recruiter(): BelongsTo
+    {
+        return $this->belongsTo(GlobalSetValueModel::class, 'emp_recruiter_id', 'id');
+    }
 }

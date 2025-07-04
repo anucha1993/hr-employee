@@ -42,12 +42,36 @@
                 </a>
                 
             </li>
+            
             <li>
                  <a href="{{ route('employees.index') }}" class="side-nav-link">
                     <i class="ri-compasses-2-line"></i>
                     <span>ข้อมูลผู้สมัคร </span>
                 </a>
             </li>
+
+             <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarReports" aria-expanded="false" aria-controls="sidebarReports"
+                    class="side-nav-link">
+                    <i class="ri-file-chart-line"></i>
+                    <span>รายงาน</span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarReports">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('reports.customer-employee') }}">รายงานจำนวนพนักงาน</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('reports.employee-report') }}">รายงานข้อมูลพนักงาน</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('reports.labor-demand') }}">สถิติข้อมูลพนักงาน</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            
              <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages"
                     class="side-nav-link">

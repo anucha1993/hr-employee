@@ -50,6 +50,12 @@ class CustomerModel extends Model
     {
         return $this->belongsTo(GlobalSetValueModel::class, 'customer_branch');
     }
+
+    public function employees()
+    {
+        return $this->hasMany('App\Models\Employees\EmployeeModel', 'emp_factory_id');
+    }
+    
     public function latestContract()
     {
         return $this->hasOne(contractModel::class, 'customer_id')->latestOfMany('contract_end_date');
