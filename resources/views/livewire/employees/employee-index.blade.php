@@ -246,7 +246,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="rounded-circle text-white d-flex align-items-center justify-content-center me-2"
                                              style="min-width: 40px; height: 40px; font-size: 16px; background-color: #2196F3;">
-                                            {{ strtoupper(substr($emp->emp_name, 0, 2)) }}
+                                            {{ mb_strtoupper(mb_substr($emp->emp_name, 0, 2, 'UTF-8'), 'UTF-8') }}
                                         </div>
                                         <div>
                                             <div class="fw-bold fs-5">{{ $emp->emp_name }}</div>

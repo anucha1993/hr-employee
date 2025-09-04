@@ -18,8 +18,13 @@
                     <a href="{{ route('customer.create') }}" class="btn btn-success">
                         <i class="fa fa-plus"></i> เพิ่มลูกค้าใหม่
                     </a>
+
+                     <a href="{{ route('reports.customer-employee') }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fa fa-file-excel"></i> ออกรายงานพนักงาน
+                            </a>
                     @endcan
                 </div>
+                
             </div>
             <div class="card-body">
 
@@ -93,9 +98,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             {{ $this->customers->links('pagination::bootstrap-5') }}
                             
-                            <a href="{{ route('reports.customer-employee') }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fa fa-file-excel"></i> ออกรายงานพนักงาน
-                            </a>
+                           
                         </div>
                     </div>
                 </div>
