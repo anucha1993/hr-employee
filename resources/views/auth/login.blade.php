@@ -14,8 +14,8 @@
                 <div class="col-xxl-8 col-lg-10">
                     <div class="card overflow-hidden">
                         <div class="row g-0">
-                            <div class="col-lg-6 d-none d-lg-block p-2">
-                                <img src="/images/auth-img.jpg" alt="" class="img-fluid rounded h-100">
+                            <div class="col-lg-6 d-none d-lg-block p-2 align-self-center">
+                                <img src="https://cdn.pixabay.com/photo/2024/11/12/11/21/employee-9191975_1280.jpg" alt="" class="img-fluid rounded h-80">
                             </div>
                             <div class="col-lg-6">
                                 <div class="d-flex flex-column h-100">
@@ -47,14 +47,14 @@
                                             <div class="mb-3">
                                                 <label for="emailaddress" class="form-label">Email address</label>
                                                 <input class="form-control" type="email" name="email" id="emailaddress"
-                                                    placeholder="Enter your email" value="ap.anucha@hotmail.com">
+                                                    placeholder="Enter your email" value="">
                                             </div>
                                             <div class="mb-3">
                                                 <a href="auth-forgotpw.html" class="text-muted float-end"><small>Forgot
                                                         your
                                                         password?</small></a>
                                                 <label for="password" class="form-label">Password</label>
-                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter your password" value="aod13364734">
+                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter your password" value="">
                                             </div>
                                             <div class="mb-3">
                                                 <div class="form-check">

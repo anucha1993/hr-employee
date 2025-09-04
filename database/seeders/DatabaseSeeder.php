@@ -40,6 +40,8 @@ class DatabaseSeeder extends Seeder
             EmployeeStatusSeeder::class,
             CustomerSeeder::class,
             EmployeeSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

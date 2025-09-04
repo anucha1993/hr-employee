@@ -718,11 +718,13 @@
                             </div>
 
                             <!-- ปุ่มบันทึก -->
+                            @can('create employee')
                             <div class="text-center py-3">
                                 <button type="submit" class="btn btn-primary btn-lg px-4">
                                     💾 บันทึกข้อมูลพนักงาน
                                 </button>
                             </div>
+                              @endcan
                         </form>
                     </div>
                 </div>

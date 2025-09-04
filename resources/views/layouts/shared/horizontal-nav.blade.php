@@ -184,6 +184,19 @@
                             <a href="{{ route('second', ['layouts-eg', 'boxed']) }}" class="dropdown-item" target="_blank">Boxed Layout</a>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        @can('view user')
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-management" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ri-settings-3-line"></i>การจัดการ <div class="arrow-down"></div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-management">
+                            @role('Admin')
+                                <a href="{{ route('profiles.index') }}" class="dropdown-item">โปรไฟล์ (Profile)</a>
+                            @endrole
+                            <a href="{{ route('users.index') }}" class="dropdown-item">ผู้ใช้ (User)</a>
+                        </div>
+                        @endcan
+                    </li>
                 </ul>
             </div>
         </nav>

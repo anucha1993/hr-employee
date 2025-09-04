@@ -322,12 +322,13 @@
 
 
                 </div>
-
+                  @can('create customer')
                 <div class="text-end mt-3">
                     <button wire:click="update" class="btn btn-success">
                         <i class="fa fa-save"></i> บันทึกข้อมูลลูกค้า
                     </button>
                 </div>
+                @endcan
 
             </div>
         </div>

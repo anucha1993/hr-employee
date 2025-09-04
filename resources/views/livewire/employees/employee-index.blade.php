@@ -141,12 +141,16 @@
                             </div>
                             <div class="col-md-6 text-end">
                                 <div class="btn-group">
+                                    @can('create employee')
                                     <a href="{{ route('employees.create') }}" class="btn btn-primary btn-lg">
                                         <i class="mdi mdi-account-plus"></i> เพิ่มพนักงาน
                                     </a>
+                                    @endcan
+                                     @can('export report')
                                     <button type="button" wire:click="exportExcel" class="btn btn-success btn-lg">
                                         <i class="mdi mdi-microsoft-excel"></i> ส่งออก Excel
                                     </button>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
@@ -299,16 +303,20 @@
                                     <span class="badge bg-{{ $statusClass }} fs-6">{{ $status }}</span>
                                 </td>
                                 <td>
+                                    @can('edit employee')
                                     <div class="d-flex justify-content-center gap-2">
                                         <a href="{{ route('employees.edit', $emp->id) }}" 
                                            class="btn btn-outline-primary">
                                            <i class="mdi mdi-pencil"></i>
                                         </a>
+                                        @endcan
+                                         @can('edit employee')
                                         <button type="button"
                                                 onclick="if (confirm('ต้องการลบพนักงาน {{ $emp->emp_name }} หรือไม่?')) { @this.call('delete', {{ $emp->id }}) }"
                                                 class="btn btn-outline-danger">
                                                 <i class="mdi mdi-delete"></i>
                                         </button>
+                                         @endcan
                                     </div>
                                 </td>
                             </tr>

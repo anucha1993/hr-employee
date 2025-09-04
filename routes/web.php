@@ -1,5 +1,10 @@
 <?php
 
+
+use App\Livewire\Users\UserForm;
+use App\Livewire\Users\UserIndex;
+use App\Livewire\Users\UserCreate;
+use App\Livewire\Roles\ProfileIndex;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Customers\CustomerEdit;
 use App\Livewire\Employees\EmployeeForm;
@@ -9,26 +14,29 @@ use App\Livewire\Customers\CustomerCreate;
 use App\Http\Controllers\RoutingController;
 use App\Livewire\Globalsets\GlobalSetManager;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+
+
+Route::middleware(['auth', 'permission:view user'])->group(function () {
+    Route::get('/profiles', ProfileIndex::class)->name('profiles.index');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', UserIndex::class)->name('index');
+        Route::get('/create', UserCreate::class)->name('create');
+        Route::get('/{user}/edit', UserForm::class)->name('edit');
+    });
+});
+
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/global-sets', GlobalSetManager::class)->name('global-sets');
-    
-    // Reports Routes
+    // User Management
     Route::prefix('reports')->name('reports.')->group(function () {
         // Controller-based routes
         Route::get('/customer-employee', \App\Livewire\Reports\CustomerEmployeeReport::class)->name('customer-employee');
         Route::post('/customer-employee/export', [\App\Http\Controllers\Reports\CustomerEmployeeReportController::class, 'export'])->name('customer-employee.export');
-        
         // Employee Report Routes
         Route::get('/employee-report', \App\Livewire\Reports\EmployeeReport::class)->name('employee-report');
         
@@ -38,8 +46,8 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', CustomerIndex::class)->name('index');
-    Route::get('/home', CustomerIndex::class)->name('index');
+    Route::get('/', CustomerIndex::class)->name('home');
+    Route::get('/home', CustomerIndex::class)->name('dashboard');
     Route::prefix('customer')
         ->name('customer.')
         ->group(function () {
@@ -56,6 +64,8 @@ Route::get('/employees/create', EmployeeForm::class)->name('employees.create');
 Route::get('/employees/{id}/edit', EmployeeForm::class)->name('employees.edit');
 
 });
+
+
 
 require __DIR__ . '/auth.php';
 

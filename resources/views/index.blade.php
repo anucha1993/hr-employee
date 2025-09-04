@@ -371,6 +371,25 @@
         </div> <!-- end col-->
     </div>
     <!-- end row -->
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">Role Management</div>
+                <div class="card-body">
+                    @livewire('roles.role-index')
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">Assign Permissions</div>
+                <div class="card-body">
+                    @livewire('roles.permission-assign')
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')

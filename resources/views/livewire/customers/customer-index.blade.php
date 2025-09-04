@@ -14,10 +14,11 @@
             <div class="card-header">
                 <h2 class="">รายชื่อลูกค้า</h2>
                 <div class="d-flex justify-content-end gap-2">
-                  
+                  @can('create customer')
                     <a href="{{ route('customer.create') }}" class="btn btn-success">
                         <i class="fa fa-plus"></i> เพิ่มลูกค้าใหม่
                     </a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">
@@ -68,13 +69,17 @@
                                     <td>{!! getStatusCutomerBadge($customer->customer_status) !!}</td>
                                     <td>
                                         {{-- <a href="#" class="btn btn-sm btn-info">ดู</a> --}}
-                                        <a href="{{ route('customer.edit', $customer->id) }}"
+                                        @can('edit customer')
+                                             <a href="{{ route('customer.edit', $customer->id) }}"
                                             class="btn btn-sm btn-warning">แก้ไข</a>
+                                        @endcan
+                                        @can('delete customer')
                                         <button type="button"
                                             onclick="if (confirm('ยืนยันการลบ?')) { @this.call('delete', {{ $customer->id }}) }"
                                             class="btn btn-sm btn-danger">
                                             ลบ
                                         </button>
+                                         @endcan
                                     </td>
                                 </tr>
                             @empty

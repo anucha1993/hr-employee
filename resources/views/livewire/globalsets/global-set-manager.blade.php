@@ -8,9 +8,11 @@
             <div class="card-header d-flex justify-content-between ">
                 <h3 class="card-title">Global Sets</h3>
                 <!-- ปุ่มเปิด Modal -->
+                  @can('edit global')
               <button type="button" class="btn btn-primary" wire:click="create" data-bs-toggle="modal" data-bs-target="#globalSetModal">
     <i class="fa fa-add"></i> เพิ่ม
 </button>
+@endcan
             </div>
             <div class="card-body">
                 <table class="table table">
@@ -31,8 +33,12 @@
                                 <td>{{ $set->description }}</td>
                                 <td class="text-center">{{ $set->values_count }}</td>
                                 <td class="text-right">
-                                    <button wire:click="edit({{ $set->id }})" data-bs-toggle="modal" data-bs-target="#globalSetModal" class="btn btn-sm btn-warning">แก้ไข</button>
-                                    <button wire:click="delete({{ $set->id }})" class="btn btn-sm btn-danger">ลบ</button>
+                                    @can('edit global')
+                                        <button wire:click="edit({{ $set->id }})" data-bs-toggle="modal" data-bs-target="#globalSetModal" class="btn btn-sm btn-warning">แก้ไข</button>
+                                    @endcan
+                                    @can('delete global')
+                                        <button wire:click="delete({{ $set->id }})" class="btn btn-sm btn-danger">ลบ</button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty
