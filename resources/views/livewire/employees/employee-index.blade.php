@@ -36,33 +36,25 @@
         <div class="row">
             <div class="col-12">
 
-                <div class="card shadow-sm border-0" style="border-radius: 12px;">
-                    <!-- Header -->
-                    <div class="card-header bg-primary text-white py-3" style="border-radius: 12px 12px 0 0;">
+                <div class="card shadow-sm border-0">
+                    <!-- Compact Header -->
+                    <div class="card-header bg-gradient bg-primary text-white py-2">
                         <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h3 class="mb-0 fw-bold">
-                                    <i class="mdi mdi-account-group me-2"></i>จัดการข้อมูลพนักงาน
-                                </h3>
-                            </div>
-                            <div>
-                                <span class="badge bg-light text-primary px-3 py-2">
-                                    ทั้งหมด {{ $employees->total() }} คน
-                                </span>
-                            </div>
+                            <h5 class="mb-0 fw-bold"><i class="mdi mdi-account-group me-1"></i>พนักงาน</h5>
+                            <span class="badge bg-white text-primary">{{ $employees->total() }} คน</span>
                         </div>
                     </div>
 
-                    <div class="card-body p-4">
+                    <div class="card-body p-3">
                         <!-- Search & Add Button -->
                         
 
-                        <!-- Status Statistics -->
-                        <div class="row mb-4">
+                        <!-- Compact Statistics -->
+                        <div class="row mb-3">
                             <div class="col-12">
-                                <div class="card border-0 bg-light">
-                                    <div class="card-body py-3">
-                                        <h5 class="mb-3 fw-bold text-dark"><i class="mdi mdi-chart-pie me-1"></i> สถิติพนักงานตามสถานะ</h5>
+                                <div class="card border bg-light">
+                                    <div class="card-body py-2">
+                                        <h6 class="mb-2 fw-bold text-dark"><i class="mdi mdi-chart-pie me-1"></i>สถิติ</h6>
                                         <div class="row g-3">
                                             @php
                                                 // Group employees by status
@@ -77,23 +69,21 @@
                                                 ];
                                             @endphp
                                             
-                                            <!-- Total Employees Card -->
-                                            <div class="col-md-3">
-                                                <div class="card border-0 shadow-sm h-100">
-                                                    <div class="card-body p-3 d-flex align-items-center">
-                                                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3"
-                                                             style="width: 48px; height: 48px;">
-                                                            <i class="mdi mdi-account-group text-white fs-4"></i>
-                                                        </div>
-                                                        <div>
-                                                            <h3 class="mb-0 fw-bold">{{ $totalEmployees }}</h3>
-                                                            <div class="text-muted">พนักงานทั้งหมด</div>
-                                                        </div>
+                                            <!-- Total -->
+                                            <div class="col-6 col-md-3">
+                                                <div class="d-flex align-items-center p-2 bg-white rounded border">
+                                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-2"
+                                                         style="width: 36px; height: 36px;">
+                                                        <i class="mdi mdi-account-group text-white fs-6"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="mb-0 fw-bold" style="color: #212529;">{{ $totalEmployees }}</h5>
+                                                        <small style="color: #6c757d;">ทั้งหมด</small>
                                                     </div>
                                                 </div>
                                             </div>
                                             
-                                            <!-- Status-specific cards -->
+                                            <!-- Status cards -->
                                             @foreach($statusOptions as $statusOption)
                                                 @php
                                                     $statusId = $statusOption->id;
@@ -102,22 +92,15 @@
                                                     $percentage = $totalEmployees > 0 ? round(($count / $totalEmployees) * 100) : 0;
                                                     $colorClass = $statusColors[$statusName] ?? 'secondary';
                                                 @endphp
-                                                <div class="col-md-3">
-                                                    <div class="card border-0 shadow-sm h-100">
-                                                        <div class="card-body p-3">
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="rounded-circle bg-{{ $colorClass }} d-flex align-items-center justify-content-center me-3"
-                                                                     style="width: 48px; height: 48px;">
-                                                                    <i class="mdi mdi-account-circle text-white fs-4"></i>
-                                                                </div>
-                                                                <div>
-                                                                    <h3 class="mb-0 fw-bold">{{ $count }}</h3>
-                                                                    <div class="d-flex align-items-center">
-                                                                        <span class="badge bg-{{ $colorClass }} me-2">{{ $statusName }}</span>
-                                                                        <span class="text-muted">{{ $percentage }}%</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                <div class="col-6 col-md-3">
+                                                    <div class="d-flex align-items-center p-2 bg-white rounded border">
+                                                        <div class="rounded-circle bg-{{ $colorClass }} d-flex align-items-center justify-content-center me-2"
+                                                             style="width: 36px; height: 36px;">
+                                                            <span class="text-white fw-bold fs-6">{{ $count }}</span>
+                                                        </div>
+                                                        <div>
+                                                            <div class="fw-bold" style="color: #212529; font-size: 13px;">{{ $statusName }}</div>
+                                                            <small class="text-{{ $colorClass }}">{{ $percentage }}%</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -128,27 +111,28 @@
                             </div>
                         </div>
 
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="input-group input-group-lg">
+                        <!-- Compact Search & Actions -->
+                        <div class="row mb-3">
+                            <div class="col-md-7">
+                                <div class="input-group">
                                     <input type="text" wire:model.live.debounce.500ms="search" 
                                            class="form-control"
-                                           placeholder="🔍 ค้นหาชื่อ, รหัสพนักงาน, หรือเบอร์โทร...">
-                                    <button class="btn btn-outline-secondary" type="button" wire:click="toggleFilter">
-                                        <i class="mdi mdi-filter-outline"></i> ตัวกรอง
+                                           placeholder="🔍 ค้นหา...">
+                                    <button class="btn btn-outline-secondary btn-sm" type="button" wire:click="toggleFilter">
+                                        <i class="mdi mdi-filter"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-md-6 text-end">
-                                <div class="btn-group">
+                            <div class="col-md-5 text-end">
+                                <div class="btn-group btn-group-sm">
                                     @can('create employee')
-                                    <a href="{{ route('employees.create') }}" class="btn btn-primary btn-lg">
-                                        <i class="mdi mdi-account-plus"></i> เพิ่มพนักงาน
+                                    <a href="{{ route('employees.create') }}" class="btn btn-primary">
+                                        <i class="mdi mdi-plus"></i> เพิ่ม
                                     </a>
                                     @endcan
                                      @can('export report')
-                                    <button type="button" wire:click="exportExcel" class="btn btn-success btn-lg">
-                                        <i class="mdi mdi-microsoft-excel"></i> ส่งออก Excel
+                                    <button type="button" wire:click="exportExcel" class="btn btn-success">
+                                        <i class="mdi mdi-microsoft-excel"></i> Excel
                                     </button>
                                     @endcan
                                 </div>
@@ -222,37 +206,36 @@
                         </div>
                         @endif
 
-                        <!-- Styled Table -->
+                        <!-- Compact Table -->
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle" style="font-size: 15px;">
+                            <table class="table table-sm table-hover align-middle" style="font-size: 14px;">
                                 <thead class="table-light">
-                                    <tr>
-                                        <th width="30" class="text-muted">#</th>
-                                        <th width="230">ชื่อพนักงาน</th>
-                                        <th width="50" class="text-center">อายุ</th>
-                                        <th width="150">ข้อมูลติดต่อ</th>
-                                        <th width="200">ที่อยู่</th>
-                                        <th width="140">โรงงาน</th>
-                                        <th width="90">สถานะ</th>
-                                        <th width="100" class="text-center">จัดการ</th>
+                                    <tr style="border-bottom: 2px solid #dee2e6;">
+                                        <th width="30" style="color: #495057; font-weight: 600;">#</th>
+                                        <th width="200" style="color: #212529; font-weight: 600;">ชื่อพนักงาน</th>
+                                        <th width="40" class="text-center" style="color: #212529; font-weight: 600;">อายุ</th>
+                                        <th width="120" style="color: #212529; font-weight: 600;">ติดต่อ</th>
+                                        <th width="180" style="color: #212529; font-weight: 600;">ที่อยู่</th>
+                                        <th width="120" style="color: #212529; font-weight: 600;">โรงงาน</th>
+                                        <th width="80">สถานะ</th>
+                                        <th width="120" class="text-center">จัดการ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <tbody>
                         @forelse ($employees as $index => $emp)
                             <tr class="align-middle">
-                                <td class="text-muted">{{ $employees->firstItem() + $index }}</td>
+                                <td style="color: #495057; font-weight: 500; font-size: 13px;">{{ $employees->firstItem() + $index }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="rounded-circle text-white d-flex align-items-center justify-content-center me-2"
-                                             style="min-width: 40px; height: 40px; font-size: 16px; background-color: #2196F3;">
+                                             style="min-width: 32px; height: 32px; font-size: 13px; background-color: #2196F3;">
                                             {{ mb_strtoupper(mb_substr($emp->emp_name, 0, 2, 'UTF-8'), 'UTF-8') }}
                                         </div>
                                         <div>
-                                            <div class="fw-bold fs-5">{{ $emp->emp_name }}</div>
-                                            <div class="d-flex align-items-center text-secondary">
-                                                <i class="mdi mdi-card-account-details-outline"></i>
-                                                <span class="ms-1 badge bg-light text-dark">{{ $emp->emp_code ?: '-' }}</span>
+                                            <div class="fw-bold" style="color: #212529;">{{ $emp->emp_name }}</div>
+                                            <div class="d-flex align-items-center" style="color: #6c757d; font-size: 12px;">
+                                                <span class="badge bg-light" style="color: #212529; border: 1px solid #dee2e6; font-size: 11px;">{{ $emp->emp_code ?: '-' }}</span>
                                                 @if($emp->emp_department)
                                                 <span class="ms-1">{{ $emp->emp_department }}</span>
                                                 @endif
@@ -265,29 +248,26 @@
                                         $birthdate = $emp->emp_birthdate ? \Carbon\Carbon::parse($emp->emp_birthdate) : null;
                                         $age = $birthdate ? $birthdate->age : '-';
                                     @endphp
-                                    <span class="badge rounded-pill bg-light text-dark fs-6">{{ $age }} ปี</span>
+                                    <span class="badge rounded-pill bg-light" style="color: #212529; border: 1px solid #dee2e6; font-weight: 600; font-size: 12px;">{{ $age }}</span>
                                 </td>
                                 <td>
-                                    <div>
-                                        <div><i class="mdi mdi-phone text-success"></i><span class="ms-1">{{ $emp->emp_phone }}</span></div>
-                                        @if($emp->emp_email)
-                                        <div class="mt-1"><i class="mdi mdi-email-outline text-primary"></i><span class="ms-1">{{ Str::limit($emp->emp_email, 20) }}</span></div>
-                                        @endif
+                                    <div style="color: #212529; font-size: 13px;">
+                                        <div><i class="mdi mdi-phone text-success"></i><span class="ms-1 fw-medium">{{ $emp->emp_phone }}</span></div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="text-muted">
+                                    <div style="color: #495057; font-size: 12px;">
                                         <i class="mdi mdi-map-marker text-danger"></i>
-                                        <span class="ms-1">{{ Str::limit($emp->current_address_details ?? $emp->emp_address_current ?? '-', 38) }}</span>
+                                        <span class="ms-1">{{ Str::limit($emp->current_address_details ?? $emp->emp_address_current ?? '-', 30) }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     @if($emp->emp_factory_id)
-                                        <span class="badge rounded-pill" style="background-color: #03A9F4; font-weight: normal; padding: 6px 12px; font-size: 14px;">
-                                            {{ $factories->firstWhere('id', $emp->emp_factory_id)?->customer_name ?? '-' }}
+                                        <span class="badge rounded-pill" style="background-color: #03A9F4; font-weight: 500; padding: 4px 10px; font-size: 12px;">
+                                            {{ Str::limit($factories->firstWhere('id', $emp->emp_factory_id)?->customer_name ?? '-', 15) }}
                                         </span>
                                     @else
-                                        <span class="text-muted">-</span>
+                                        <span style="color: #6c757d;">-</span>
                                     @endif
                                 </td>
                                 <td>

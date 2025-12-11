@@ -83,6 +83,9 @@ class EmployeeIndex extends Component
     
     public function exportExcel()
     {
+        $user = auth()->user();
+        !$isSuperAdmin = $user && $user->hasRole('Super Admin');
+        
         $filters = [
             'search' => $this->search,
             'status' => $this->filter_status,
@@ -90,6 +93,7 @@ class EmployeeIndex extends Component
             'age_from' => $this->filter_age_from,
             'age_to' => $this->filter_age_to,
             'department' => $this->filter_department,
+            'created_by' => !$isSuperAdmin ? $user->id : null, // เพิ่ม filter created_by
         ];
         
         $timestamp = Carbon::now()->format('Ymd_His');
@@ -99,6 +103,15 @@ class EmployeeIndex extends Component
     public function render()
     {
         $query = EmployeeModel::query();
+        
+        // ตรวจสอบ role ของผู้ใช้ - ถ้าไม่ใช่ super admin ให้ดูข้อมูลที่ตัวเองสร้างเท่านั้น
+        $user = auth()->user();
+        $isSuperAdmin = $user && $user->hasRole('Super Admin');
+        
+        if (!$isSuperAdmin) {
+            // กรองเฉพาะข้อมูลที่ผู้ใช้คนนี้สร้าง
+            $query->where('created_by', $user->id);
+        }
         
         // Apply search filter
         if (!empty($this->search)) {
@@ -135,19 +148,25 @@ class EmployeeIndex extends Component
 
         $employees = $query->latest()->paginate($this->perPage);
 
-        // Get all employees for statistics (without pagination)
-        $allEmployeesForStats = EmployeeModel::all();
+        // Get all employees for statistics (with same permission filter)
+        $statsQuery = EmployeeModel::query();
+        if (!$isSuperAdmin) {
+            $statsQuery->where('created_by', $user->id);
+        }
+        $allEmployeesForStats = $statsQuery->get();
 
         $factories = CustomerModel::all();
         $empStatusGlobalSet = GlobalSetModel::where('name', 'EMP_STATUS')->first();
         $statusOptions = $empStatusGlobalSet ? $empStatusGlobalSet->values : collect([]);
         
-        // Get unique departments for filter dropdown
-        $departments = EmployeeModel::select('emp_department')
+        // Get unique departments for filter dropdown (with same permission filter)
+        $deptQuery = EmployeeModel::select('emp_department')
             ->whereNotNull('emp_department')
-            ->where('emp_department', '<>', '')
-            ->distinct()
-            ->pluck('emp_department');
+            ->where('emp_department', '<>', '');
+        if (!$isSuperAdmin) {
+            $deptQuery->where('created_by', $user->id);
+        }
+        $departments = $deptQuery->distinct()->pluck('emp_department');
 
         return view('livewire.employees.employee-index', [
             'employees' => $employees,

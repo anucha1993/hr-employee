@@ -92,7 +92,7 @@
                 </div>
             </li>
 
-             @if(auth()->check() && (auth()->user()->hasRole('SuperAdmin') || (method_exists(auth()->user(), 'can') && auth()->user()->can('view user'))))
+             @if(auth()->check() && (auth()->user()->hasRole('Super Admin') || (method_exists(auth()->user(), 'can') && auth()->user()->can('view user'))))
              
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarManagement" aria-expanded="false" aria-controls="sidebarManagement" class="side-nav-link">
@@ -102,7 +102,7 @@
                             </a>
                             <div class="collapse" id="sidebarManagement">
                                 <ul class="side-nav-second-level">
-                                    @if(auth()->user()->hasRole('SuperAdmin') || auth()->user()->hasRole('Admin'))
+                                    @if(auth()->user()->hasRole('Super Admin') || auth()->user()->hasRole('Admin'))
                                     <li><a href="{{ route('profiles.index') }}">โปรไฟล์ (Profile)</a></li>
                                     @endif
                                     @can('view user')

@@ -20,7 +20,7 @@ class RolePermissionSeeder extends Seeder
         Permission::query()->delete();
 
         // ✅ สร้าง Roles
-        $superAdmin = Role::firstOrCreate(['name' => 'SuperAdmin']);
+        $Super Admin = Role::firstOrCreate(['name' => 'Super Admin']);
         // $admin = Role::firstOrCreate(['name' => 'Admin']);
         // $user = Role::firstOrCreate(['name' => 'User']);
         Role::firstOrCreate(['name' => 'docs']);
@@ -57,13 +57,13 @@ class RolePermissionSeeder extends Seeder
         // $admin->syncPermissions($permissions);
         // $user->syncPermissions(['view user', 'view quote', 'view report']);
         // ป้องกัน error 100%: syncPermissions ต้องรับ array ของชื่อ หรือ id เท่านั้น
-        $superAdmin->syncPermissions(Permission::pluck('name')->toArray());
+        $Super Admin->syncPermissions(Permission::pluck('name')->toArray());
 
-        // ✅ Assign SuperAdmin ให้ผู้ใช้ ID 1, 2
+        // ✅ Assign Super Admin ให้ผู้ใช้ ID 1, 2
         foreach ([1, 2] as $id) {
             $user = User::find($id);
             if ($user) {
-                $user->syncRoles([$superAdmin->name]); // ใช้ name (string) เท่านั้น
+                $user->syncRoles([$Super Admin->name]); // ใช้ name (string) เท่านั้น
             }
         }
 

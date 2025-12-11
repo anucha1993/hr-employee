@@ -284,14 +284,34 @@
                                 @error('files.*')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                                
+                                {{-- แสดง loading เมื่อกำลัง upload --}}
+                                <div wire:loading wire:target="files" class="mt-2">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span class="text-primary">กำลังอัพโหลด...</span>
+                                </div>
+                                
+                                {{-- แสดงไฟล์ที่เลือก --}}
+                                @if (!empty($files))
+                                    <div class="mt-2 alert alert-info">
+                                        <strong>ไฟล์ที่เลือก:</strong>
+                                        <ul class="mb-0">
+                                            @foreach ($files as $file)
+                                                <li>{{ $file->getClientOriginalName() }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
-                        @if (isset($customer->customer_files) && is_array($customer->customer_files) && !empty($customer->customer_files))
+                        @if (isset($customer_files) && is_array($customer_files) && !empty($customer_files))
                             <div class="mt-3">
                                 <label class="fw-bold">ไฟล์ที่แนบไว้แล้ว:</label>
                                 <ul class="list-group mt-2">
-                                    @foreach ($customer->customer_files as $index => $path)
+                                    @foreach ($customer_files as $index => $path)
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <a href="{{ asset('storage/' . $path) }}" target="_blank">
                                                 {{ basename($path) }}

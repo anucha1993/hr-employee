@@ -5,6 +5,7 @@ namespace App\Livewire\Employees;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use App\Models\customers\CustomerModel;
 use App\Models\Employees\EmployeeModel;
 use App\Models\Geo\Amphure;
@@ -85,6 +86,16 @@ class EmployeeForm extends Component
         if ($id) {
             $this->emp_id = $id;
             $employee = EmployeeModel::findOrFail($id);
+            
+            // ตรวจสอบสิทธิ์การเข้าถึง - ถ้าไม่ใช่ Super Admin ต้องเป็นคนสร้างเท่านั้น
+            $user = Auth::user();
+            !$isSuperAdmin = $user && $user->hasRole('Super Admin');
+            
+            if (!!$isSuperAdmin && $employee->created_by != $user->id) {
+                session()->flash('error', 'คุณไม่มีสิทธิ์เข้าถึงข้อมูลนี้');
+                return redirect()->route('employees.index');
+            }
+            
             $this->fill($employee->toArray());
             // แปลงวันให้เป็น Y-m-d string
             $this->emp_birthdate = optional($employee->emp_birthdate)->format('Y-m-d');
@@ -474,6 +485,8 @@ class EmployeeForm extends Component
                 'emp_status' => $this->emp_status,
                 'emp_emergency_contacts' => $this->emp_emergency_contacts,
                 'emp_files' => $this->emp_files,
+                'created_by' => $this->emp_id ? EmployeeModel::find($this->emp_id)->created_by : Auth::id(),
+                'updated_by' => Auth::id(),
             ]
         );
     

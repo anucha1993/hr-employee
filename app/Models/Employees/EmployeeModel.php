@@ -56,6 +56,8 @@ class EmployeeModel extends Model
         'emp_status',
         'emp_emergency_contacts',
         'emp_files',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [

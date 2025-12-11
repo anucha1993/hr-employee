@@ -55,8 +55,12 @@ class CustomerEdit extends Component
 
     public function mount(CustomerModel $customer)
     {
-        $this->customer_files = $customer->customer_files ?? [];
-        $customer->customer_files = $customer->customer_files ?? [];
+        // แปลงให้เป็น array ถ้ายังไม่ใช่
+        $customerFiles = $customer->customer_files ?? [];
+        if (!is_array($customerFiles)) {
+            $customerFiles = json_decode($customerFiles, true) ?? [];
+        }
+        $this->customer_files = $customerFiles;
         $this->customer = $customer;
         $this->customer_id = $customer->id;
 
@@ -127,18 +131,29 @@ class CustomerEdit extends Component
             'files.*' => 'file',
         ]);
 
+        // แปลงให้เป็น array ถ้ายังไม่ใช่
         $uploadedFilePaths = $this->customer->customer_files ?? [];
+        if (!is_array($uploadedFilePaths)) {
+            $uploadedFilePaths = is_string($uploadedFilePaths) ? json_decode($uploadedFilePaths, true) : [];
+        }
+        if (!is_array($uploadedFilePaths)) {
+            $uploadedFilePaths = [];
+        }
 
-        foreach ($this->files as $file) {
-            $filename = 'customer_' . $this->customer->id . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/customers', $filename, 'public');
-            $uploadedFilePaths[] = $path;
+        // Upload ไฟล์ใหม่
+        if (!empty($this->files)) {
+            foreach ($this->files as $file) {
+                $filename = 'customer_' . $this->customer->id . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('uploads/customers', $filename, 'public');
+                $uploadedFilePaths[] = $path;
+            }
         }
 
         // อัปเดตข้อมูลลูกค้า
         $this->customer->update([
             'customer_name' => $this->customer_name,
             'customer_taxid' => $this->customer_taxid,
+            'updated_by' => Auth::id(),
             'customer_branch' => $this->customer_branch,
             'customer_branch_name' => $this->customer_branch_name,
             'customer_address_number' => $this->customer_address_number,
@@ -169,9 +184,12 @@ class CustomerEdit extends Component
             'customer_status' => $this->customer_status, 
 
 
-             
             'customer_files' => $uploadedFilePaths,
         ]);
+
+        // Reset files array และ refresh customer_files
+        $this->files = [];
+        $this->customer_files = $uploadedFilePaths;
 
         // ลบและเพิ่มสัญญาใหม่ทั้งหมด
         contractModel::where('customer_id', $this->customer->id)->delete();

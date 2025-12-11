@@ -5,11 +5,16 @@
 namespace App\Livewire\Users;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
 class UserIndex extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+    
     public $search = '';
     public $user_id;
     public $role_id;
@@ -29,6 +34,11 @@ class UserIndex extends Component
         'email' => 'required|email',
         'password' => 'nullable|min:8|confirmed'
     ];
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function mount()
     {
@@ -144,7 +154,7 @@ class UserIndex extends Component
                 $q->where('name', 'like', '%' . $this->search . '%')
                   ->orWhere('email', 'like', '%' . $this->search . '%');
             })
-            ->get();
+            ->paginate(15);
         return view('livewire.users.user-index', [
             'users' => $users
         ])->layout('layouts.vertical-main', ['title' => 'จัดการผู้ใช้งาน']);

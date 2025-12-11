@@ -13,77 +13,135 @@
         </div>
     @endif
 
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <form class="d-flex">
-                        <div class="input-group">
-                            <input type="text" class="form-control" wire:model.live="search" placeholder="ค้นหาผู้ใช้...">
-                            <span class="input-group-text"><i class="ri-search-line"></i></span>
+    <div class="container-fluid">
+        <br>
+        <div class="card shadow-sm">
+            <div class="card-header py-2" style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <h5 class="mb-0" style="color: #212529; font-weight: 600;">
+                            <i class="ri-user-settings-line me-2"></i>จัดการผู้ใช้งาน
+                        </h5>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text" style="background-color: #fff; border-right: 0;">
+                                <i class="ri-search-line" style="color: #495057;"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   wire:model.live.debounce.300ms="search" 
+                                   placeholder="ค้นหาชื่อ, อีเมล..."
+                                   style="border-left: 0;">
+                            @if($search)
+                            <button class="btn btn-outline-secondary btn-sm" wire:click="$set('search', '')" type="button">
+                                <i class="ri-close-line"></i>
+                            </button>
+                            @endif
                         </div>
-                    </form>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <a href="{{ route('users.create') }}" class="btn btn-sm btn-success">
+                            <i class="ri-add-circle-line me-1"></i> เพิ่มผู้ใช้งาน
+                        </a>
+                    </div>
                 </div>
-                <h4 class="page-title">จัดการผู้ใช้งาน</h4>
             </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover align-middle mb-0" style="font-size: 13px;">
+                        <thead style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                            <tr>
+                                <th style="color: #212529; font-weight: 600; padding: 12px;">#</th>
+                                <th style="color: #212529; font-weight: 600; padding: 12px;">ชื่อผู้ใช้</th>
+                                <th style="color: #212529; font-weight: 600; padding: 12px;">อีเมล</th>
+                                <th style="color: #212529; font-weight: 600; padding: 12px; text-align: center;">บทบาท</th>
+                                <th style="width: 180px; color: #212529; font-weight: 600; padding: 12px; text-align: center;">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($users as $index => $user)
+                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                <td style="padding: 12px; color: #495057; font-weight: 500;">{{ $users->firstItem() + $index }}</td>
+                                <td style="padding: 12px;">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle text-white d-flex align-items-center justify-content-center me-2"
+                                             style="min-width: 32px; height: 32px; font-size: 13px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                            {{ mb_strtoupper(mb_substr($user->name, 0, 2, 'UTF-8'), 'UTF-8') }}
+                                        </div>
+                                        <span style="color: #212529; font-weight: 600;">{{ $user->name }}</span>
+                                    </div>
+                                </td>
+                                <td style="padding: 12px; color: #495057;">
+                                    <i class="ri-mail-line me-1 text-primary"></i>{{ $user->email }}
+                                </td>
+                                <td style="padding: 12px; text-align: center;">
+                                    @php
+                                        $roleColors = [
+                                            'Super Admin' => 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                            'Admin' => 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                                            'User' => 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                                        ];
+                                        $roleName = $user->roles->pluck('name')->first() ?: 'User';
+                                        $bgStyle = $roleColors[$roleName] ?? 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)';
+                                    @endphp
+                                    <span class="badge text-white" style="background: {{ $bgStyle }}; font-size: 11px; font-weight: 500; padding: 5px 12px;">
+                                        {{ $user->roles->pluck('name')->implode(', ') ?: 'User' }}
+                                    </span>
+                                </td>
+                                <td style="padding: 12px; text-align: center;">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <button class="btn btn-sm btn-outline-warning" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#userModal" 
+                                                wire:click="edit({{ $user->id }})"
+                                                title="จัดการโปรไฟล์">
+                                            <i class="bi bi-person-gear"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-primary" 
+                                                wire:click="editUser({{ $user->id }})"
+                                                title="แก้ไข">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" 
+                                                wire:click="resetPassword({{ $user->id }})"
+                                                title="รีเซ็ตรหัสผ่าน">
+                                            <i class="bi bi-key"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" 
+                                                wire:click="deleteConfirm({{ $user->id }})"
+                                                title="ลบ">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center" style="padding: 40px; color: #6c757d;">
+                                    <i class="ri-user-unfollow-line" style="font-size: 48px; opacity: 0.3;"></i>
+                                    <div class="mt-2">ไม่มีข้อมูลผู้ใช้</div>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            @if($users->hasPages())
+            <div class="card-footer" style="background-color: #f8f9fa;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div style="color: #6c757d; font-size: 13px;">
+                        แสดง {{ $users->firstItem() }} ถึง {{ $users->lastItem() }} จากทั้งหมด {{ $users->total() }} รายการ
+                    </div>
+                    {{ $users->links('pagination::bootstrap-5') }}
+                </div>
+            </div>
+            @endif
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col-12">
-            <a href="{{ route('users.create') }}" class="btn btn-success">
-                <i class="ri-add-circle-line me-1"></i> เพิ่มผู้ใช้งาน
-            </a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-centered table-nowrap mb-0">
-                            <thead>
-                                <tr>
-                                    <th>ชื่อ</th>
-                                    <th>อีเมล</th>
-                                    <th>โปรไฟล์</th>
-                                    <th style="width: 250px;">จัดการ</th>
-                                </tr>
-                            </thead>
-
-      <tbody>
-        @forelse ($users as $user)
-          <tr>
-            <td class="text-center">{{ $user->name }}</td>
-            <td class="text-center">{{ $user->email }}</td>
-            <td class="text-center">
-              <span class="badge bg-info text-dark px-2 py-1">
-                {{ $user->roles->pluck('name')->implode(', ') ?: '-' }}
-              </span>
-            </td>
-            <td class="text-center">
-              <button class="btn btn-outline-warning btn-sm px-3 me-1" data-bs-toggle="modal" data-bs-target="#userModal" wire:click="edit({{ $user->id }})">
-                <i class="bi bi-person-gear"></i> จัดการโปรไฟล์
-              </button>
-              <button class="btn btn-outline-primary btn-sm px-3 me-1" wire:click="editUser({{ $user->id }})">
-                <i class="bi bi-pencil"></i> แก้ไข
-              </button>
-              <button class="btn btn-outline-info btn-sm px-3 me-1" wire:click="resetPassword({{ $user->id }})">
-                <i class="bi bi-key"></i> รีเซ็ตรหัสผ่าน
-              </button>
-              <button class="btn btn-outline-danger btn-sm px-3" wire:click="deleteConfirm({{ $user->id }})">
-                <i class="bi bi-trash"></i> ลบ
-              </button>
-            </td>
-          </tr>
-        @empty
-          <tr>
-            <td colspan="4" class="text-center text-muted">ไม่มีข้อมูลผู้ใช้</td>
-          </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
 
     {{-- Modal Bootstrap --}}
     <div wire:ignore.self class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">

@@ -102,7 +102,7 @@ class CustomerCreate extends Component
             'customer_employee_total_required' => $this->customer_employee_total_required, 
 
 
-            'created_by' => Auth::user()?->name ?? 'system',
+            'created_by' => Auth::id(),
         ]);
 
         // 2. Upload Files หลังจากมี customer_id แล้ว
@@ -116,6 +116,7 @@ class CustomerCreate extends Component
         // 3. Update customer record ด้วยไฟล์
         $customer->update([
             'customer_files' => $uploadedFilePaths,
+            'updated_by' => Auth::id(),
         ]);
 
         // 4. Save Contracts

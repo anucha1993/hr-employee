@@ -28,7 +28,7 @@ class CustomerModel extends Model
     'customer_cid_check',
     'customer_employee_total_required',
     'customer_status',
-    'customer_branch', 'customer_branch_name', 'customer_address_number', 'customer_address_district', 'customer_address_amphur', 'customer_address_province', 'customer_address_zipcode', 'customer_contact_name_1', 'customer_contact_phone_1', 'customer_contact_email_1', 'customer_contact_position_1', 'customer_contact_name_2', 'customer_contact_phone_2', 'customer_contact_email_2', 'customer_contact_position_2', 'customer_files', 'created_by'];
+    'customer_branch', 'customer_branch_name', 'customer_address_number', 'customer_address_district', 'customer_address_amphur', 'customer_address_province', 'customer_address_zipcode', 'customer_contact_name_1', 'customer_contact_phone_1', 'customer_contact_email_1', 'customer_contact_position_1', 'customer_contact_name_2', 'customer_contact_phone_2', 'customer_contact_email_2', 'customer_contact_position_2', 'customer_files', 'created_by', 'updated_by'];
 
     /**
      * Get the customer files attribute.
@@ -39,7 +39,23 @@ class CustomerModel extends Model
      */
     public function getCustomerFilesAttribute($value)
     {
-        return is_null($value) ? [] : $value;
+        // ถ้าเป็น null ให้คืน array เปล่า
+        if (is_null($value)) {
+            return [];
+        }
+        
+        // ถ้าเป็น string (JSON) ให้ decode
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            return is_array($decoded) ? $decoded : [];
+        }
+        
+        // ถ้าเป็น array อยู่แล้ว ให้คืนไปเลย
+        if (is_array($value)) {
+            return $value;
+        }
+        
+        return [];
     }
 
     public function contracts()
