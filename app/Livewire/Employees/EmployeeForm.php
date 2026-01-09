@@ -35,16 +35,6 @@ class EmployeeForm extends Component
     public $emp_address_current;
     public $emp_address_register;
     
-    // New address fields for current address
-    public $current_province_id;
-    public $current_province_code;
-    public $current_amphur_id;
-    public $current_amphur_code;
-    public $current_district_id;
-    public $current_district_code;
-    public $current_zipcode;
-    public $current_address_details;
-    
     // New address fields for registered address
     public $registered_province_id;
     public $registered_province_code;
@@ -57,8 +47,6 @@ class EmployeeForm extends Component
     
     // Address dropdown options
     public $provinces = [];
-    public $currentAmphures = [];
-    public $currentDistricts = [];
     public $registeredAmphures = [];
     public $registeredDistricts = [];
     
@@ -74,9 +62,6 @@ class EmployeeForm extends Component
     public $emp_status;
     public $emp_emergency_contacts = [['name' => '', 'phone' => '', 'relation' => ''], ['name' => '', 'phone' => '', 'relation' => '']];
     public $emp_files = [];
-    
-    // For the "Use same address" checkbox
-    public $use_same_address = false;
 
     public function mount($id = null)
     {
@@ -89,9 +74,9 @@ class EmployeeForm extends Component
             
             // ตรวจสอบสิทธิ์การเข้าถึง - ถ้าไม่ใช่ Super Admin ต้องเป็นคนสร้างเท่านั้น
             $user = Auth::user();
-            !$isSuperAdmin = $user && $user->hasRole('Super Admin');
+            $isSuperAdmin = $user && $user->hasRole('Super Admin');
             
-            if (!!$isSuperAdmin && $employee->created_by != $user->id) {
+            if (!$isSuperAdmin && $employee->created_by != $user->id) {
                 session()->flash('error', 'คุณไม่มีสิทธิ์เข้าถึงข้อมูลนี้');
                 return redirect()->route('employees.index');
             }
@@ -124,29 +109,6 @@ class EmployeeForm extends Component
             }
             
             // โหลดข้อมูลที่อยู่ตามลำดับเพื่อให้แสดงผลได้ถูกต้อง
-            // โหลดที่อยู่ปัจจุบัน
-            if ($this->current_province_id) {
-                // โหลด amphures ของจังหวัดที่เลือก
-                $province = Province::find($this->current_province_id);
-                if ($province) {
-                    $this->current_province_code = $province->province_code;
-                    $this->currentAmphures = Amphure::where('province_code', $province->province_code)
-                        ->orderBy('amphur_name')
-                        ->get();
-                }
-                
-                // โหลด districts ของอำเภอที่เลือก
-                if ($this->current_amphur_id) {
-                    $amphur = Amphure::find($this->current_amphur_id);
-                    if ($amphur) {
-                        $this->current_amphur_code = $amphur->amphur_code;
-                        $this->currentDistricts = District::where('amphur_code', $amphur->amphur_code)
-                            ->orderBy('district_name')
-                            ->get();
-                    }
-                }
-            }
-            
             // โหลดที่อยู่ตามทะเบียนบ้าน
             if ($this->registered_province_id) {
                 // โหลด amphures ของจังหวัดที่เลือก
@@ -174,89 +136,6 @@ class EmployeeForm extends Component
         }
     }
 
-    public function updatedCurrentProvinceId($value)
-    {
-        if ($value) {
-            $province = Province::find($value);
-            if ($province) {
-                $this->current_province_code = $province->province_code;
-                
-                // Load amphures based on province code
-                $this->currentAmphures = Amphure::where('province_code', $province->province_code)
-                    ->orderBy('amphur_name')
-                    ->get();
-                
-                // Reset dependent fields
-                $this->current_amphur_id = null;
-                $this->current_amphur_code = null;
-                $this->current_district_id = null;
-                $this->current_district_code = null;
-                $this->current_zipcode = null;
-                $this->currentDistricts = [];
-                
-                if ($this->use_same_address) {
-                    $this->copyCurrentToRegistered();
-                }
-            }
-        } else {
-            // If no province selected, clear amphures
-            $this->currentAmphures = [];
-            $this->current_amphur_id = null;
-            $this->current_amphur_code = null;
-            $this->current_district_id = null;
-            $this->current_district_code = null;
-            $this->current_zipcode = null;
-            $this->currentDistricts = [];
-        }
-    }
-    
-    public function updatedCurrentAmphurId($value)
-    {
-        if ($value) {
-            $amphur = Amphure::find($value);
-            if ($amphur) {
-                $this->current_amphur_code = $amphur->amphur_code;
-                
-                // Load districts based on amphur code
-                $this->currentDistricts = District::where('amphur_code', $amphur->amphur_code)
-                    ->orderBy('district_name')
-                    ->get();
-                    
-                $this->current_district_id = null;
-                $this->current_district_code = null;
-                $this->current_zipcode = null;
-                
-                if ($this->use_same_address) {
-                    $this->copyCurrentToRegistered();
-                }
-            }
-        } else {
-            // If no amphur selected, clear districts
-            $this->currentDistricts = [];
-            $this->current_district_id = null;
-            $this->current_district_code = null;
-            $this->current_zipcode = null;
-        }
-    }
-    
-    public function updatedCurrentDistrictId($value)
-    {
-        if ($value) {
-            $district = District::find($value);
-            if ($district) {
-                $this->current_district_code = $district->district_code;
-                
-                if ($district->zipcode) {
-                    $this->current_zipcode = $district->zipcode;
-                }
-                
-                if ($this->use_same_address) {
-                    $this->copyCurrentToRegistered();
-                }
-            }
-        }
-    }
-    
     public function updatedRegisteredProvinceId($value)
     {
         if ($value) {
@@ -327,34 +206,6 @@ class EmployeeForm extends Component
         }
     }
     
-    public function updatedUseSameAddress($value)
-    {
-        if ($value) {
-            $this->copyCurrentToRegistered();
-        }
-    }
-    
-    public function copyCurrentToRegistered()
-    {
-        $this->registered_province_id = $this->current_province_id;
-        $this->registered_province_code = $this->current_province_code;
-        $this->registered_amphur_id = $this->current_amphur_id;
-        $this->registered_amphur_code = $this->current_amphur_code;
-        $this->registered_district_id = $this->current_district_id;
-        $this->registered_district_code = $this->current_district_code;
-        $this->registered_zipcode = $this->current_zipcode;
-        $this->registered_address_details = $this->current_address_details;
-        
-        // Load the related data for registered address
-        if ($this->registered_province_id) {
-            $this->updatedRegisteredProvinceId($this->registered_province_id);
-        }
-        
-        if ($this->registered_amphur_id) {
-            $this->updatedRegisteredAmphurId($this->registered_amphur_id);
-        }
-    }
-
     public function getEmpAgeProperty()
     {
         return $this->emp_birthdate ? now()->diffInYears(Carbon::parse($this->emp_birthdate)) : null;
@@ -372,25 +223,8 @@ class EmployeeForm extends Component
 
     public function save()
     {
-        // ถ้าเลือกใช้ที่อยู่เดียวกัน ให้คัดลอกข้อมูลที่อยู่ปัจจุบันไปยังที่อยู่ตามทะเบียนบ้าน
-        if ($this->use_same_address) {
-            $this->copyCurrentToRegistered();
-        }
-        
         // คงเก็บที่อยู่แบบเดิมไว้ด้วย เพื่อความเข้ากันได้กับระบบเดิม
-        // สร้างข้อความที่อยู่ปัจจุบันและที่อยู่ตามทะเบียนบ้าน
-        if ($this->current_province_id && $this->current_amphur_id && $this->current_district_id) {
-            $province = Province::find($this->current_province_id);
-            $amphur = Amphure::find($this->current_amphur_id);
-            $district = District::find($this->current_district_id);
-            
-            $fullAddressCurrent = $this->current_address_details ?? '';
-            $fullAddressCurrent .= ' ต.' . ($district->district_name ?? '') . ' อ.' . ($amphur->amphur_name ?? '');
-            $fullAddressCurrent .= ' จ.' . ($province->province_name ?? '') . ' ' . ($this->current_zipcode ?? '');
-            
-            $this->emp_address_current = $fullAddressCurrent;
-        }
-        
+        // สร้างข้อความที่อยู่ตามทะเบียนบ้าน
         if ($this->registered_province_id && $this->registered_amphur_id && $this->registered_district_id) {
             $province = Province::find($this->registered_province_id);
             $amphur = Amphure::find($this->registered_amphur_id);
@@ -407,10 +241,8 @@ class EmployeeForm extends Component
             'emp_name' => 'required|string',
             'emp_idcard' => 'required|digits:13',
             'emp_phone' => 'required',
-            'current_province_id' => 'required',
-            'current_amphur_id' => 'required',
-            'current_district_id' => 'required',
-            'current_address_details' => 'required',
+            'emp_gender' => 'required',
+            'emp_education' => 'required',
             'registered_province_id' => 'required',
             'registered_amphur_id' => 'required',
             'registered_district_id' => 'required',
@@ -459,14 +291,6 @@ class EmployeeForm extends Component
                 'emp_factory_id' => $this->emp_factory_id,
                 'emp_address_current' => $this->emp_address_current,
                 'emp_address_register' => $this->emp_address_register,
-                'current_province_id' => $this->current_province_id,
-                'current_province_code' => $this->current_province_code,
-                'current_amphur_id' => $this->current_amphur_id,
-                'current_amphur_code' => $this->current_amphur_code,
-                'current_district_id' => $this->current_district_id,
-                'current_district_code' => $this->current_district_code,
-                'current_zipcode' => $this->current_zipcode,
-                'current_address_details' => $this->current_address_details,
                 'registered_province_id' => $this->registered_province_id,
                 'registered_province_code' => $this->registered_province_code,
                 'registered_amphur_id' => $this->registered_amphur_id,
@@ -504,16 +328,12 @@ class EmployeeForm extends Component
         if ($value === 'เริ่มงาน') {
             $this->validate([
                 'emp_code' => 'required',
-                'emp_department' => 'required',
-                'current_province_id' => 'required',
-                'current_amphur_id' => 'required',
-                'current_district_id' => 'required',
-                'current_address_details' => 'required',
+                // 'emp_department' => 'required',
                 'registered_province_id' => 'required',
                 'registered_amphur_id' => 'required',
                 'registered_district_id' => 'required',
                 'registered_address_details' => 'required',
-                'emp_start_date' => 'required|date',
+                //'emp_start_date' => 'required|date',
                 'emp_medical_right' => 'required',
             ]);
         } elseif ($value === 'ลาออก') {

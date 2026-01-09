@@ -32,6 +32,14 @@ class EmployeesReportExport implements FromQuery, WithHeadings, WithMapping, Wit
                 ->with(['factory', 'status', 'recruiter']) // Eager load relationships
                 ->orderBy('emp_code');
         
+        // ตรวจสอบว่าเป็น Staff RE หรือไม่
+        if (isset($this->filters['is_staff_re']) && $this->filters['is_staff_re'] === true) {
+            // ถ้าเป็น Staff RE ให้แสดงเฉพาะข้อมูลที่ตนเองสร้าง
+            if (isset($this->filters['user_id'])) {
+                $query->where('created_by', $this->filters['user_id']);
+            }
+        }
+        
         // กรองตามบริษัทที่เลือก
         if (isset($this->filters['customer_ids']) && !empty($this->filters['customer_ids'])) {
             $query->whereIn('emp_factory_id', $this->filters['customer_ids']);

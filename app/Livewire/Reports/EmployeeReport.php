@@ -4,6 +4,7 @@ namespace App\Livewire\Reports;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 use App\Models\customers\CustomerModel;
 use App\Models\Employees\EmployeeModel;
 use App\Models\globalsets\GlobalSetModel;
@@ -84,6 +85,9 @@ class EmployeeReport extends Component
 
     public function exportExcel()
     {
+        $user = Auth::user();
+        $isStaffRE = $user && $user->hasRole('Staff RE');
+        
         $filters = [
             'customer_ids' => $this->customer_ids,
             'start_month' => $this->start_month,
@@ -92,6 +96,8 @@ class EmployeeReport extends Component
             'date_to' => $this->date_to ? Carbon::parse($this->date_to)->endOfDay() : null,
             'employee_status' => $this->employee_status,
             'recruited_employees' => $this->recruited_employees,
+            'user_id' => $user->id,
+            'is_staff_re' => $isStaffRE,
         ];
 
         // ชื่อไฟล์ Excel ที่จะดาวน์โหลด
@@ -105,6 +111,15 @@ class EmployeeReport extends Component
     {
         // ดึงข้อมูลพนักงานตามเงื่อนไข filter เดียวกับการ export
         $query = EmployeeModel::query()->with(['factory', 'status', 'recruiter']);
+        
+        // ตรวจสอบว่าเป็น Staff RE หรือไม่
+        $user = Auth::user();
+        $isStaffRE = $user && $user->hasRole('Staff RE');
+        
+        // ถ้าเป็น Staff RE ให้แสดงเฉพาะข้อมูลที่ตนเองสร้าง
+        if ($isStaffRE) {
+            $query->where('created_by', $user->id);
+        }
         
         // กรองตามบริษัทที่เลือก
         if (!empty($this->customer_ids)) {

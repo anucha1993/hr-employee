@@ -203,10 +203,10 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">เพศ</label>
+                                            <label class="form-label">เพศ <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="mdi mdi-gender-male-female"></i></span>
-                                                <select wire:model.defer="emp_gender" class="form-select">
+                                                <select wire:model.defer="emp_gender" class="form-select" required>
                                                     <option value="">- เลือกเพศ -</option>
                                                     <option value="ชาย">ชาย</option>
                                                     <option value="หญิง">หญิง</option>
@@ -221,7 +221,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">อายุ</label>
+                                            <label class="form-label">อายุ <span class="text-secondary">Auto</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="mdi mdi-calendar-clock"></i></span>
                                                 <input type="text" value="{{ $this->empAge }} ปี" class="form-control bg-light" disabled>
@@ -239,10 +239,10 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">วุฒิการศึกษา</label>
+                                            <label class="form-label">วุฒิการศึกษา <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="mdi mdi-school"></i></span>
-                                                <select wire:model.defer="emp_education" class="form-select">
+                                                <select wire:model.defer="emp_education" class="form-select" required>
                                                     <option value="">- เลือกวุฒิการศึกษา -</option>
                                                     @foreach ($educationOptions as $item)
                                                         <option value="{{ $item->id }}">{{ $item->value }}</option>
@@ -442,110 +442,14 @@
 
                             <div class="divider"></div>
 
-                            <!-- ที่อยู่ปัจจุบัน -->
+                            <!-- ที่อยู่ตามทะเบียนบ้าน -->
                             <div class="section-card mb-3">
                                 <div class="section-header p-2">
                                     <div class="d-flex align-items-center">
                                         <div class="section-icon">
-                                            🏠
+                                            📑
                                         </div>
-                                        <h4 class="mb-0 fw-bold text-primary">ที่อยู่ปัจจุบัน</h4>
-                                    </div>
-                                </div>
-                                <div class="card-body p-3">
-                                     <div class="col-12 mb-2">
-                                            <label class="form-label">รายละเอียดที่อยู่ <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">📝</span>
-                                                <textarea wire:model.defer="current_address_details" class="form-control" rows="2" 
-                                                    placeholder="บ้านเลขที่ หมู่บ้าน ซอย ถนน"></textarea>
-                                            </div>
-                                            @error('current_address_details')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-
-                                    <div class="row g-3">
-                                         <div class="col-md-6">
-                                             <label class="form-label">จังหวัด <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                         
-                                                <div class="custom-search-input-wrapper flex-grow-1">
-                                                  <select wire:model.live="current_province_id" class="form-select select2">
-                                                    <option value="">- เลือกจังหวัด -</option>
-                                                    @foreach ($provinces as $province)
-                                                        <option value="{{ $province->id }}">{{ $province->province_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                </div>
-                                            </div>
-                                            @error('emp_medical_right')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-
-                                    
-                                        <div class="col-md-6">
-                                            <label class="form-label">อำเภอ/เขต <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                               
-                                                <select wire:model.live="current_amphur_id" class="form-select select2" {{ count($currentAmphures) == 0 ? 'disabled' : '' }}>
-                                                    <option value="">- เลือกอำเภอ/เขต -</option>
-                                                    @foreach ($currentAmphures as $amphur)
-                                                        <option value="{{ $amphur->id }}">{{ $amphur->amphur_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            @error('current_amphur_id')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">ตำบล/แขวง <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-
-                                                <select wire:model.live="current_district_id" class="form-select select2" {{ count($currentDistricts) == 0 ? 'disabled' : '' }}>
-                                                    <option value="">- เลือกตำบล/แขวง -</option>
-                                                    @foreach ($currentDistricts as $district)
-                                                        <option value="{{ $district->id }}">{{ $district->district_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            @error('current_district_id')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">รหัสไปรษณีย์ <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">📮</span>
-                                                <input type="text" wire:model="current_zipcode" class="form-control" placeholder="รหัสไปรษณีย์" maxlength="5" readonly>
-                                            </div>
-                                            @error('current_zipcode')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="divider"></div>
-
-                            <!-- ที่อยู่ตามทะเบียนบ้าน -->
-                            <div class="section-card mb-3">
-                                <div class="section-header p-2">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <div class="section-icon">
-                                                📑
-                                            </div>
-                                            <h4 class="mb-0 fw-bold text-primary">ที่อยู่ตามทะเบียนบ้าน</h4>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="useSameAddress" wire:model="use_same_address">
-                                            <label class="form-check-label fs-6" for="useSameAddress">ใช้ที่อยู่เดียวกับที่อยู่ปัจจุบัน</label>
-                                        </div>
+                                        <h4 class="mb-0 fw-bold text-primary">ที่อยู่ตามทะเบียนบ้าน</h4>
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
@@ -554,18 +458,19 @@
                                             <div class="input-group">
                                                 <span class="input-group-text">📝</span>
                                                 <textarea wire:model.defer="registered_address_details" class="form-control" rows="2" 
-                                                    placeholder="บ้านเลขที่ หมู่บ้าน ซอย ถนน" {{ $use_same_address ? 'readonly tabindex="-1"' : '' }}></textarea>
+                                                    placeholder="บ้านเลขที่ หมู่บ้าน ซอย ถนน"></textarea>
                                             </div>
                                             @error('registered_address_details')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
+                                        
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">จังหวัด <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                 
-                                                <select wire:model.live="registered_province_id" class="form-select select2" {{ $use_same_address ? 'disabled' : '' }} style="width: 10%">
+                                                <select wire:model.live="registered_province_id" class="form-select select2" style="width: 10%">
                                                     <option value="">- เลือกจังหวัด -</option>
                                                     @foreach ($provinces as $province)
                                                         <option value="{{ $province->id }}">{{ $province->province_name }}</option>
@@ -582,7 +487,7 @@
                                             <label class="form-label">อำเภอ/เขต <span class="text-danger">*</span></label>
                                             <div class="input-group">
                    
-                                                <select wire:model.live="registered_amphur_id" class="form-select select2" {{ count($registeredAmphures) == 0 || $use_same_address ? 'disabled' : '' }}>
+                                                <select wire:model.live="registered_amphur_id" class="form-select select2" {{ count($registeredAmphures) == 0 ? 'disabled' : '' }}>
                                                     <option value="">- เลือกอำเภอ/เขต -</option>
                                                     @foreach ($registeredAmphures as $amphur)
                                                         <option value="{{ $amphur->id }}">{{ $amphur->amphur_name }}</option>
@@ -597,7 +502,7 @@
                                             <label class="form-label">ตำบล/แขวง <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                
-                                                <select wire:model.live="registered_district_id" class="form-select select2" {{ count($registeredDistricts) == 0 || $use_same_address ? 'disabled' : '' }}>
+                                                <select wire:model.live="registered_district_id" class="form-select select2" {{ count($registeredDistricts) == 0 ? 'disabled' : '' }}>
                                                     <option value="">- เลือกตำบล/แขวง -</option>
                                                     @foreach ($registeredDistricts as $district)
                                                         <option value="{{ $district->id }}">{{ $district->district_name }}</option>
@@ -613,7 +518,7 @@
                                             <div class="input-group">
                                                 <span class="input-group-text">📮</span>
                                                 <input type="text" wire:model="registered_zipcode" class="form-control" 
-                                                    placeholder="รหัสไปรษณีย์" maxlength="5" {{ $use_same_address ? 'readonly tabindex="-1"' : '' }} readonly>
+                                                    placeholder="รหัสไปรษณีย์" maxlength="5" readonly>
                                             </div>
                                             @error('registered_zipcode')
                                                 <small class="text-danger">{{ $message }}</small>

@@ -85,7 +85,7 @@
                                     <td style="color: #495057; font-weight: 500;">{{ $index + 1 }}</td>
                                     <td style="color: #212529; font-weight: 600;">{{ $customer->customer_name }}</td>
                                     <td style="color: #495057;">{{ $customer->customer_taxid }}</td>
-                                    <td style="color: #495057;">{{ $customer->branch->value }}</td>
+                                    <td style="color: #495057;">{{ $customer->branch?->value ?? '-' }}</td>
                                     <td style="color: #495057;">{{ $customer->customer_address_province }}</td>
 
                                     <td>
