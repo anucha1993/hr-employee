@@ -487,42 +487,70 @@
                                             <label class="form-label">อำเภอ/เขต <span class="text-danger">*</span></label>
                                             <div class="input-group">
                    
-                                                <select wire:model.live="registered_amphur_id" class="form-select select2" {{ count($registeredAmphures) == 0 ? 'disabled' : '' }}>
-                                                    <option value="">- เลือกอำเภอ/เขต -</option>
-                                                    @foreach ($registeredAmphures as $amphur)
-                                                        <option value="{{ $amphur->id }}">{{ $amphur->amphur_name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                @if(count($registeredAmphures) > 0)
+                                                    <select wire:model.live="registered_amphur_id" class="form-select select2">
+                                                        <option value="">- เลือกอำเภอ/เขต -</option>
+                                                        @foreach ($registeredAmphures as $amphur)
+                                                            <option value="{{ $amphur->id }}">{{ $amphur->amphur_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @else
+                                                    <input type="text" wire:model.defer="registered_amphur_text" class="form-control" 
+                                                        placeholder="กรอกชื่ออำเภอ/เขต (ไม่มีข้อมูลในระบบ)" 
+                                                        {{ $registered_province_id ? '' : 'disabled' }}>
+                                                @endif
                                             </div>
                                             @error('registered_amphur_id')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
+                                            @error('registered_amphur_text')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                            @if(count($registeredAmphures) == 0 && $registered_province_id)
+                                                <small class="text-info">⚠️ จังหวัดนี้ยังไม่มีข้อมูลอำเภอในระบบ กรุณากรอกด้วยตนเอง</small>
+                                            @endif
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">ตำบล/แขวง <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                               
-                                                <select wire:model.live="registered_district_id" class="form-select select2" {{ count($registeredDistricts) == 0 ? 'disabled' : '' }}>
-                                                    <option value="">- เลือกตำบล/แขวง -</option>
-                                                    @foreach ($registeredDistricts as $district)
-                                                        <option value="{{ $district->id }}">{{ $district->district_name }}</option>
-                                                    @endforeach
-                                                </select>
+               
+                                                @if(count($registeredDistricts) > 0)
+                                                    <select wire:model.live="registered_district_id" class="form-select select2">
+                                                        <option value="">- เลือกตำบล/แขวง -</option>
+                                                        @foreach ($registeredDistricts as $district)
+                                                            <option value="{{ $district->id }}">{{ $district->district_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @else
+                                                    <input type="text" wire:model.defer="registered_district_text" class="form-control" 
+                                                        placeholder="กรอกชื่อตำบล/แขวง (ไม่มีข้อมูลในระบบ)" 
+                                                        {{ ($registered_province_id && (count($registeredAmphures) == 0 || $registered_amphur_id || $registered_amphur_text)) ? '' : 'disabled' }}>
+                                                @endif
                                             </div>
                                             @error('registered_district_id')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
+                                            @error('registered_district_text')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                            @if(count($registeredDistricts) == 0 && ($registered_amphur_id || $registered_amphur_text))
+                                                <small class="text-info">⚠️ อำเภอนี้ยังไม่มีข้อมูลตำบลในระบบ กรุณากรอกด้วยตนเอง</small>
+                                            @endif
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">รหัสไปรษณีย์ <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text">📮</span>
                                                 <input type="text" wire:model="registered_zipcode" class="form-control" 
-                                                    placeholder="รหัสไปรษณีย์" maxlength="5" readonly>
+                                                    placeholder="รหัสไปรษณีย์" maxlength="5" 
+                                                    {{ count($registeredDistricts) > 0 ? 'readonly' : '' }}>
                                             </div>
                                             @error('registered_zipcode')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
+                                            @if(count($registeredDistricts) == 0 && ($registered_district_text || $registered_amphur_text))
+                                                <small class="text-info">ℹ️ กรุณากรอกรหัสไปรษณีย์ 5 หลัก</small>
+                                            @endif
                                         </div>
                                         
                                     </div>

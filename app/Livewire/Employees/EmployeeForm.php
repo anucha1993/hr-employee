@@ -45,6 +45,10 @@ class EmployeeForm extends Component
     public $registered_zipcode;
     public $registered_address_details;
     
+    // Fallback text fields for areas without data
+    public $registered_amphur_text;
+    public $registered_district_text;
+    
     // Address dropdown options
     public $provinces = [];
     public $registeredAmphures = [];
@@ -223,31 +227,58 @@ class EmployeeForm extends Component
 
     public function save()
     {
-        // คงเก็บที่อยู่แบบเดิมไว้ด้วย เพื่อความเข้ากันได้กับระบบเดิม
-        // สร้างข้อความที่อยู่ตามทะเบียนบ้าน
-        if ($this->registered_province_id && $this->registered_amphur_id && $this->registered_district_id) {
-            $province = Province::find($this->registered_province_id);
-            $amphur = Amphure::find($this->registered_amphur_id);
-            $district = District::find($this->registered_district_id);
-            
-            $fullAddressRegistered = $this->registered_address_details ?? '';
-            $fullAddressRegistered .= ' ต.' . ($district->district_name ?? '') . ' อ.' . ($amphur->amphur_name ?? '');
-            $fullAddressRegistered .= ' จ.' . ($province->province_name ?? '') . ' ' . ($this->registered_zipcode ?? '');
-            
-            $this->emp_address_register = $fullAddressRegistered;
-        }
-        
-        $this->validate([
+        // Validation rules
+        $rules = [
             'emp_name' => 'required|string',
             'emp_idcard' => 'required|digits:13',
             'emp_phone' => 'required',
             'emp_gender' => 'required',
             'emp_education' => 'required',
             'registered_province_id' => 'required',
-            'registered_amphur_id' => 'required',
-            'registered_district_id' => 'required',
             'registered_address_details' => 'required',
-        ]);
+        ];
+        
+        // Add conditional validation based on data availability
+        if (count($this->registeredAmphures) > 0) {
+            // If amphures are available, require selection
+            $rules['registered_amphur_id'] = 'required';
+        } else {
+            // If no amphures available, require text input
+            $rules['registered_amphur_text'] = 'required|string';
+        }
+        
+        if (count($this->registeredDistricts) > 0) {
+            // If districts are available, require selection
+            $rules['registered_district_id'] = 'required';
+        } else {
+            // If no districts available, require text input
+            $rules['registered_district_text'] = 'required|string';
+            $rules['registered_zipcode'] = 'required|digits:5';
+        }
+        
+        $this->validate($rules);
+        
+        // Build address string for registered address
+        $fullAddressRegistered = $this->registered_address_details ?? '';
+        
+        if ($this->registered_district_id) {
+            // Use database data
+            $province = Province::find($this->registered_province_id);
+            $amphur = Amphure::find($this->registered_amphur_id);
+            $district = District::find($this->registered_district_id);
+            
+            $fullAddressRegistered .= ' ต.' . ($district->district_name ?? '') . ' อ.' . ($amphur->amphur_name ?? '');
+            $fullAddressRegistered .= ' จ.' . ($province->province_name ?? '') . ' ' . ($this->registered_zipcode ?? '');
+        } else {
+            // Use manual text input
+            $province = Province::find($this->registered_province_id);
+            
+            $fullAddressRegistered .= ' ต.' . ($this->registered_district_text ?? '');
+            $fullAddressRegistered .= ' อ.' . ($this->registered_amphur_text ?? '');
+            $fullAddressRegistered .= ' จ.' . ($province->province_name ?? '') . ' ' . ($this->registered_zipcode ?? '');
+        }
+        
+        $this->emp_address_register = $fullAddressRegistered;
     
         // Handle file uploads
         if ($this->emp_files) {
@@ -293,10 +324,12 @@ class EmployeeForm extends Component
                 'emp_address_register' => $this->emp_address_register,
                 'registered_province_id' => $this->registered_province_id,
                 'registered_province_code' => $this->registered_province_code,
-                'registered_amphur_id' => $this->registered_amphur_id,
-                'registered_amphur_code' => $this->registered_amphur_code,
-                'registered_district_id' => $this->registered_district_id,
-                'registered_district_code' => $this->registered_district_code,
+                'registered_amphur_id' => $this->registered_amphur_id ?: null,
+                'registered_amphur_code' => $this->registered_amphur_code ?: null,
+                'registered_amphur_text' => $this->registered_amphur_text ?: null,
+                'registered_district_id' => $this->registered_district_id ?: null,
+                'registered_district_code' => $this->registered_district_code ?: null,
+                'registered_district_text' => $this->registered_district_text ?: null,
                 'registered_zipcode' => $this->registered_zipcode,
                 'registered_address_details' => $this->registered_address_details,
                 'emp_start_date' => $this->emp_start_date,
