@@ -258,7 +258,7 @@
                                 <td>
                                     <div style="color: #495057; font-size: 12px;">
                                         <i class="mdi mdi-map-marker text-danger"></i>
-                                        <span class="ms-1">{{ Str::limit($emp->current_address_details ?? $emp->emp_address_current ?? '-', 30) }}</span>
+                                        <span class="ms-1">{{ Str::limit($emp->full_registered_address, 50) }}</span>
                                     </div>
                                 </td>
                                 <td>

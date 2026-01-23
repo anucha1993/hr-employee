@@ -370,6 +370,16 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        @if ($emp_contract_type === 'สัญญาระยะสั้น')
+                                        <div class="col-md-6">
+                                            <label class="form-label">เลขที่สัญญา</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="mdi mdi-file-document-edit-outline"></i></span>
+                                                <input type="text" wire:model="emp_contract_number" class="form-control" 
+                                                    placeholder="เช่น สัญญาฉบับที่ 3">
+                                            </div>
+                                        </div>
+                                        @endif
                                         <div class="col-lg-3">
                                             <label class="form-label">วันที่เริ่มสัญญา</label>
                                             <div class="input-group">
@@ -493,6 +503,7 @@
                                                         @foreach ($registeredAmphures as $amphur)
                                                             <option value="{{ $amphur->id }}">{{ $amphur->amphur_name }}</option>
                                                         @endforeach
+                                                        <option value="custom">🖊️ อื่นๆ (กรอกเอง)</option>
                                                     </select>
                                                 @else
                                                     <input type="text" wire:model.defer="registered_amphur_text" class="form-control" 
@@ -500,6 +511,14 @@
                                                         {{ $registered_province_id ? '' : 'disabled' }}>
                                                 @endif
                                             </div>
+                                            
+                                            @if(count($registeredAmphures) > 0 && $registered_amphur_id === 'custom')
+                                                <div class="mt-2">
+                                                    <input type="text" wire:model.defer="registered_amphur_text" class="form-control" 
+                                                        placeholder="กรอกชื่ออำเภอ/เขต">
+                                                </div>
+                                            @endif
+                                            
                                             @error('registered_amphur_id')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -520,6 +539,7 @@
                                                         @foreach ($registeredDistricts as $district)
                                                             <option value="{{ $district->id }}">{{ $district->district_name }}</option>
                                                         @endforeach
+                                                        <option value="custom">🖊️ อื่นๆ (กรอกเอง)</option>
                                                     </select>
                                                 @else
                                                     <input type="text" wire:model.defer="registered_district_text" class="form-control" 
@@ -527,6 +547,14 @@
                                                         {{ ($registered_province_id && (count($registeredAmphures) == 0 || $registered_amphur_id || $registered_amphur_text)) ? '' : 'disabled' }}>
                                                 @endif
                                             </div>
+                                            
+                                            @if(count($registeredDistricts) > 0 && $registered_district_id === 'custom')
+                                                <div class="mt-2">
+                                                    <input type="text" wire:model.defer="registered_district_text" class="form-control" 
+                                                        placeholder="กรอกชื่อตำบล/แขวง">
+                                                </div>
+                                            @endif
+                                            
                                             @error('registered_district_id')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -543,12 +571,15 @@
                                                 <span class="input-group-text">📮</span>
                                                 <input type="text" wire:model="registered_zipcode" class="form-control" 
                                                     placeholder="รหัสไปรษณีย์" maxlength="5" 
-                                                    {{ count($registeredDistricts) > 0 ? 'readonly' : '' }}>
+                                                    {{ (count($registeredDistricts) > 0 && $registered_district_id !== 'custom') ? 'readonly' : '' }}>
                                             </div>
                                             @error('registered_zipcode')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                             @if(count($registeredDistricts) == 0 && ($registered_district_text || $registered_amphur_text))
+                                                <small class="text-info">ℹ️ กรุณากรอกรหัสไปรษณีย์ 5 หลัก</small>
+                                            @endif
+                                            @if($registered_district_id === 'custom')
                                                 <small class="text-info">ℹ️ กรุณากรอกรหัสไปรษณีย์ 5 หลัก</small>
                                             @endif
                                         </div>

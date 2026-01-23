@@ -102,7 +102,8 @@ class EmployeeIndex extends Component
 
     public function render()
     {
-        $query = EmployeeModel::query();
+        $query = EmployeeModel::query()
+            ->with(['registeredProvince', 'registeredAmphur', 'registeredDistrict']); // Load relations
         
         // ตรวจสอบ role ของผู้ใช้ - ถ้าไม่ใช่ super admin ให้ดูข้อมูลที่ตัวเองสร้างเท่านั้น
         $user = auth()->user();

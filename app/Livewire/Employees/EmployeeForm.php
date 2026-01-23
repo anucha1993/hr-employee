@@ -59,6 +59,7 @@ class EmployeeForm extends Component
     public $factory_search;
     public $medical_search;
     public $emp_contract_type = 'สัญญาระยะยาว';
+    public $emp_contract_number;
     public $emp_contract_start;
     public $emp_contract_end;
     public $emp_resign_date;
@@ -124,8 +125,8 @@ class EmployeeForm extends Component
                         ->get();
                 }
                 
-                // โหลด districts ของอำเภอที่เลือก
-                if ($this->registered_amphur_id) {
+                // โหลด districts ของอำเภอที่เลือก - เฉพาะเมื่อมี ID (ไม่ใช่ข้อความที่กรอกเอง)
+                if ($this->registered_amphur_id && $this->registered_amphur_id !== 'custom') {
                     $amphur = Amphure::find($this->registered_amphur_id);
                     if ($amphur) {
                         $this->registered_amphur_code = $amphur->amphur_code;
@@ -133,6 +134,16 @@ class EmployeeForm extends Component
                             ->orderBy('district_name')
                             ->get();
                     }
+                } else if ($this->registered_amphur_text) {
+                    // ถ้ามีข้อความอำเภอที่กรอกเอง ให้ตั้ง registered_amphur_id เป็น 'custom'
+                    // เพื่อให้แสดงช่องกรอกข้อความในโหมดแก้ไข
+                    $this->registered_amphur_id = 'custom';
+                    $this->registeredDistricts = [];
+                }
+                
+                // ถ้ามีข้อความตำบลที่กรอกเอง ให้ตั้ง registered_district_id เป็น 'custom'
+                if ($this->registered_district_text) {
+                    $this->registered_district_id = 'custom';
                 }
             }
         } else {
@@ -154,8 +165,10 @@ class EmployeeForm extends Component
                     
                 $this->registered_amphur_id = null;
                 $this->registered_amphur_code = null;
+                $this->registered_amphur_text = null;
                 $this->registered_district_id = null;
                 $this->registered_district_code = null;
+                $this->registered_district_text = null;
                 $this->registered_zipcode = null;
                 $this->registeredDistricts = [];
             }
@@ -164,8 +177,10 @@ class EmployeeForm extends Component
             $this->registeredAmphures = [];
             $this->registered_amphur_id = null;
             $this->registered_amphur_code = null;
+            $this->registered_amphur_text = null;
             $this->registered_district_id = null;
             $this->registered_district_code = null;
+            $this->registered_district_text = null;
             $this->registered_zipcode = null;
             $this->registeredDistricts = [];
         }
@@ -173,10 +188,19 @@ class EmployeeForm extends Component
     
     public function updatedRegisteredAmphurId($value)
     {
-        if ($value) {
+        if ($value === 'custom') {
+            // User selected "custom" option - clear districts and allow manual input
+            $this->registeredDistricts = [];
+            $this->registered_district_id = null;
+            $this->registered_district_code = null;
+            $this->registered_district_text = null;
+            $this->registered_zipcode = null;
+            $this->registered_amphur_code = null;
+        } elseif ($value) {
             $amphur = Amphure::find($value);
             if ($amphur) {
                 $this->registered_amphur_code = $amphur->amphur_code;
+                $this->registered_amphur_text = null; // Clear text input
                 
                 // Load districts based on amphur code
                 $this->registeredDistricts = District::where('amphur_code', $amphur->amphur_code)
@@ -185,6 +209,7 @@ class EmployeeForm extends Component
                     
                 $this->registered_district_id = null;
                 $this->registered_district_code = null;
+                $this->registered_district_text = null;
                 $this->registered_zipcode = null;
             }
         } else {
@@ -192,20 +217,33 @@ class EmployeeForm extends Component
             $this->registeredDistricts = [];
             $this->registered_district_id = null;
             $this->registered_district_code = null;
+            $this->registered_district_text = null;
             $this->registered_zipcode = null;
         }
     }
     
+    // Handle when user types amphur text manually (for provinces without data)
+    public function updatedRegisteredAmphurText($value)
+    {
+        // Clear districts since we're using manual input
+        $this->registeredDistricts = [];
+        $this->registered_district_id = null;
+        $this->registered_district_code = null;
+        $this->registered_zipcode = null;
+    }
+    
     public function updatedRegisteredDistrictId($value)
     {
-        if ($value) {
+        if ($value === 'custom') {
+            // User selected "custom" option - allow manual input
+            $this->registered_district_code = null;
+            $this->registered_zipcode = null;
+        } elseif ($value) {
             $district = District::find($value);
             if ($district) {
                 $this->registered_district_code = $district->district_code;
-                
-                if ($district->zipcode) {
-                    $this->registered_zipcode = $district->zipcode;
-                }
+                $this->registered_district_text = null; // Clear text input
+                $this->registered_zipcode = $district->zipcode;
             }
         }
     }
@@ -239,19 +277,19 @@ class EmployeeForm extends Component
         ];
         
         // Add conditional validation based on data availability
-        if (count($this->registeredAmphures) > 0) {
-            // If amphures are available, require selection
+        if (count($this->registeredAmphures) > 0 && $this->registered_amphur_id !== 'custom') {
+            // If amphures are available and not custom, require selection
             $rules['registered_amphur_id'] = 'required';
         } else {
-            // If no amphures available, require text input
+            // If no amphures available or custom selected, require text input
             $rules['registered_amphur_text'] = 'required|string';
         }
         
-        if (count($this->registeredDistricts) > 0) {
-            // If districts are available, require selection
+        if (count($this->registeredDistricts) > 0 && $this->registered_district_id !== 'custom') {
+            // If districts are available and not custom, require selection
             $rules['registered_district_id'] = 'required';
         } else {
-            // If no districts available, require text input
+            // If no districts available or custom selected, require text input
             $rules['registered_district_text'] = 'required|string';
             $rules['registered_zipcode'] = 'required|digits:5';
         }
@@ -261,7 +299,7 @@ class EmployeeForm extends Component
         // Build address string for registered address
         $fullAddressRegistered = $this->registered_address_details ?? '';
         
-        if ($this->registered_district_id) {
+        if ($this->registered_district_id && $this->registered_district_id !== 'custom') {
             // Use database data
             $province = Province::find($this->registered_province_id);
             $amphur = Amphure::find($this->registered_amphur_id);
@@ -324,10 +362,10 @@ class EmployeeForm extends Component
                 'emp_address_register' => $this->emp_address_register,
                 'registered_province_id' => $this->registered_province_id,
                 'registered_province_code' => $this->registered_province_code,
-                'registered_amphur_id' => $this->registered_amphur_id ?: null,
+                'registered_amphur_id' => ($this->registered_amphur_id === 'custom') ? null : $this->registered_amphur_id,
                 'registered_amphur_code' => $this->registered_amphur_code ?: null,
                 'registered_amphur_text' => $this->registered_amphur_text ?: null,
-                'registered_district_id' => $this->registered_district_id ?: null,
+                'registered_district_id' => ($this->registered_district_id === 'custom') ? null : $this->registered_district_id,
                 'registered_district_code' => $this->registered_district_code ?: null,
                 'registered_district_text' => $this->registered_district_text ?: null,
                 'registered_zipcode' => $this->registered_zipcode,
@@ -335,6 +373,7 @@ class EmployeeForm extends Component
                 'emp_start_date' => $this->emp_start_date,
                 'emp_medical_right' => $this->emp_medical_right,
                 'emp_contract_type' => $this->emp_contract_type,
+                'emp_contract_number' => $this->emp_contract_number,
                 'emp_contract_start' => $this->emp_contract_start,
                 'emp_contract_end' => $this->emp_contract_end,
                 'emp_resign_date' => $this->emp_resign_date,

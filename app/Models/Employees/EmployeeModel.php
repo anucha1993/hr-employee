@@ -51,6 +51,7 @@ class EmployeeModel extends Model
         'emp_start_date',
         'emp_medical_right',
         'emp_contract_type',
+        'emp_contract_number',
         'emp_contract_start',
         'emp_contract_end',
         'emp_resign_date',
@@ -142,5 +143,39 @@ class EmployeeModel extends Model
     public function recruiter(): BelongsTo
     {
         return $this->belongsTo(GlobalSetValueModel::class, 'emp_recruiter_id', 'id');
+    }
+    
+    /**
+     * Get formatted full registered address
+     */
+    public function getFullRegisteredAddressAttribute(): string
+    {
+        $address = $this->registered_address_details ?? '';
+        
+        // ตำบล
+        if ($this->registered_district_text) {
+            $address .= ' ต.' . $this->registered_district_text;
+        } elseif ($this->registeredDistrict) {
+            $address .= ' ต.' . $this->registeredDistrict->district_name;
+        }
+        
+        // อำเภอ
+        if ($this->registered_amphur_text) {
+            $address .= ' อ.' . $this->registered_amphur_text;
+        } elseif ($this->registeredAmphur) {
+            $address .= ' อ.' . $this->registeredAmphur->amphur_name;
+        }
+        
+        // จังหวัด
+        if ($this->registeredProvince) {
+            $address .= ' จ.' . $this->registeredProvince->province_name;
+        }
+        
+        // รหัสไปรษณีย์
+        if ($this->registered_zipcode) {
+            $address .= ' ' . $this->registered_zipcode;
+        }
+        
+        return trim($address) ?: '-';
     }
 }
