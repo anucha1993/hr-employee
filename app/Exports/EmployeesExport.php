@@ -25,9 +25,9 @@ class EmployeesExport implements FromQuery, WithHeadings, WithMapping, WithStyle
         $query = EmployeeModel::query()
             ->with(['factory', 'status']);
         
-        // Apply created_by filter for non-super admin users
-        if (!empty($this->filters['created_by'])) {
-            $query->where('created_by', $this->filters['created_by']);
+        // Apply recruiter_id filter for non-super admin users
+        if (!empty($this->filters['recruiter_id'])) {
+            $query->where('emp_recruiter_id', $this->filters['recruiter_id']);
         }
         
         // Apply filters

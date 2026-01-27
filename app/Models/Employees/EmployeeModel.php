@@ -7,6 +7,7 @@ use App\Models\Geo\District;
 use App\Models\Geo\Province;
 use App\Models\customers\CustomerModel;
 use App\Models\globalsets\GlobalSetValueModel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -143,6 +144,14 @@ class EmployeeModel extends Model
     public function recruiter(): BelongsTo
     {
         return $this->belongsTo(GlobalSetValueModel::class, 'emp_recruiter_id', 'id');
+    }
+    
+    /**
+     * Get the user who created this employee
+     */
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
     
     /**

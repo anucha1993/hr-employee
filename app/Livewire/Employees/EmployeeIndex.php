@@ -84,7 +84,19 @@ class EmployeeIndex extends Component
     public function exportExcel()
     {
         $user = auth()->user();
-        !$isSuperAdmin = $user && $user->hasRole('Super Admin');
+        $isSuperAdmin = $user && $user->hasRole('Super Admin');
+        
+        // หา recruiter id ที่ตรงกับชื่อผู้ใช้ปัจจุบัน (สำหรับผู้ใช้ที่ไม่ใช่ Super Admin)
+        $recruiterId = null;
+        if (!$isSuperAdmin) {
+            $recruiterGlobalSet = GlobalSetModel::where('name', 'RECRUITER')->first();
+            if ($recruiterGlobalSet) {
+                $recruiterValue = GlobalSetValueModel::where('global_set_id', $recruiterGlobalSet->id)
+                    ->where('value', $user->name)
+                    ->first();
+                $recruiterId = $recruiterValue ? $recruiterValue->id : null;
+            }
+        }
         
         $filters = [
             'search' => $this->search,
@@ -93,7 +105,7 @@ class EmployeeIndex extends Component
             'age_from' => $this->filter_age_from,
             'age_to' => $this->filter_age_to,
             'department' => $this->filter_department,
-            'created_by' => !$isSuperAdmin ? $user->id : null, // เพิ่ม filter created_by
+            'recruiter_id' => $recruiterId, // ใช้ recruiter_id แทน created_by
         ];
         
         $timestamp = Carbon::now()->format('Ymd_His');
@@ -103,15 +115,30 @@ class EmployeeIndex extends Component
     public function render()
     {
         $query = EmployeeModel::query()
-            ->with(['registeredProvince', 'registeredAmphur', 'registeredDistrict']); // Load relations
+            ->with(['registeredProvince', 'registeredAmphur', 'registeredDistrict', 'recruiter', 'createdBy']); // Load relations
         
-        // ตรวจสอบ role ของผู้ใช้ - ถ้าไม่ใช่ super admin ให้ดูข้อมูลที่ตัวเองสร้างเท่านั้น
+        // ตรวจสอบ role ของผู้ใช้ - ถ้าไม่ใช่ super admin ให้ดูข้อมูลที่เจ้าหน้าที่สรรหาตรงกับชื่อผู้ใช้
         $user = auth()->user();
         $isSuperAdmin = $user && $user->hasRole('Super Admin');
         
+        // หา recruiter id ที่ตรงกับชื่อผู้ใช้ปัจจุบัน (สำหรับผู้ใช้ที่ไม่ใช่ Super Admin)
+        $recruiterId = null;
         if (!$isSuperAdmin) {
-            // กรองเฉพาะข้อมูลที่ผู้ใช้คนนี้สร้าง
-            $query->where('created_by', $user->id);
+            $recruiterGlobalSet = GlobalSetModel::where('name', 'RECRUITER')->first();
+            if ($recruiterGlobalSet) {
+                $recruiterValue = GlobalSetValueModel::where('global_set_id', $recruiterGlobalSet->id)
+                    ->where('value', $user->name)
+                    ->first();
+                $recruiterId = $recruiterValue ? $recruiterValue->id : null;
+            }
+            
+            // กรองเฉพาะข้อมูลที่เจ้าหน้าที่สรรหาตรงกับผู้ใช้ปัจจุบัน
+            if ($recruiterId) {
+                $query->where('emp_recruiter_id', $recruiterId);
+            } else {
+                // ถ้าไม่พบ recruiter ที่ตรงกับชื่อ ไม่แสดงข้อมูลใดๆ
+                $query->whereRaw('1 = 0');
+            }
         }
         
         // Apply search filter
@@ -152,7 +179,11 @@ class EmployeeIndex extends Component
         // Get all employees for statistics (with same permission filter)
         $statsQuery = EmployeeModel::query();
         if (!$isSuperAdmin) {
-            $statsQuery->where('created_by', $user->id);
+            if ($recruiterId) {
+                $statsQuery->where('emp_recruiter_id', $recruiterId);
+            } else {
+                $statsQuery->whereRaw('1 = 0');
+            }
         }
         $allEmployeesForStats = $statsQuery->get();
 
@@ -165,7 +196,11 @@ class EmployeeIndex extends Component
             ->whereNotNull('emp_department')
             ->where('emp_department', '<>', '');
         if (!$isSuperAdmin) {
-            $deptQuery->where('created_by', $user->id);
+            if ($recruiterId) {
+                $deptQuery->where('emp_recruiter_id', $recruiterId);
+            } else {
+                $deptQuery->whereRaw('1 = 0');
+            }
         }
         $departments = $deptQuery->distinct()->pluck('emp_department');
 

@@ -36,7 +36,7 @@ class GlobalSetManager extends Component
     public function create()
     {
         $this->reset(['name', 'description', 'editingId', 'values']);
-        $this->values[] = ['value' => '', 'status' => 'Enable'];
+        $this->values[] = ['id' => null, 'value' => '', 'status' => 'Enable'];
         $this->showModal = true;
     }
 
@@ -47,6 +47,7 @@ class GlobalSetManager extends Component
         $this->name = $set->name;
         $this->description = $set->description;
         $this->values = $set->values->map(fn($v) => [
+            'id' => $v->id,
             'value' => $v->value,
             'status' => $v->status,
         ])->toArray();
@@ -55,7 +56,7 @@ class GlobalSetManager extends Component
 
     public function addValue()
     {
-        $this->values[] = ['value' => '', 'status' => 'Enable'];
+        $this->values[] = ['id' => null, 'value' => '', 'status' => 'Enable'];
     }
 
     public function removeValue($index)
@@ -73,15 +74,31 @@ class GlobalSetManager extends Component
             ['name' => $this->name, 'description' => $this->description]
         );
 
-        $set->values()->delete();
+        // เก็บ id ของ values ที่ยังใช้งานอยู่
+        $existingValueIds = [];
 
         foreach ($this->values as $index => $item) {
-            $set->values()->create([
-                'value' => $item['value'],
-                'status' => $item['status'],
-                'sort_order' => $index,
-            ]);
+            if (!empty($item['id'])) {
+                // Update existing value
+                $set->values()->where('id', $item['id'])->update([
+                    'value' => $item['value'],
+                    'status' => $item['status'],
+                    'sort_order' => $index,
+                ]);
+                $existingValueIds[] = $item['id'];
+            } else {
+                // Create new value
+                $newValue = $set->values()->create([
+                    'value' => $item['value'],
+                    'status' => $item['status'],
+                    'sort_order' => $index,
+                ]);
+                $existingValueIds[] = $newValue->id;
+            }
         }
+
+        // ลบเฉพาะ values ที่ถูกลบออกจาก form (ไม่อยู่ใน existingValueIds)
+        $set->values()->whereNotIn('id', $existingValueIds)->delete();
 
         $this->loadSets();
         session()->flash('message', 'บันทึกข้อมูลสำเร็จ!');

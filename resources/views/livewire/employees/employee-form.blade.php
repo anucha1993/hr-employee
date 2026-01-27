@@ -272,7 +272,7 @@
                                             <label class="form-label">ชื่อเจ้าหน้าที่สรรหา</label>
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="mdi mdi-account-search"></i></span>
-                                                <select wire:model.defer="emp_recruiter_id" class="form-select">
+                                                <select wire:model="emp_recruiter_id" class="form-select">
                                                     <option value="">- เลือกเจ้าหน้าที่สรรหา -</option>
                                                     @foreach ($recruiterOptions as $item)
                                                         <option value="{{ $item->id }}">{{ $item->value }}</option>

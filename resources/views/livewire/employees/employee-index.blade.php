@@ -217,6 +217,8 @@
                                         <th width="120" style="color: #212529; font-weight: 600;">ติดต่อ</th>
                                         <th width="180" style="color: #212529; font-weight: 600;">ที่อยู่</th>
                                         <th width="120" style="color: #212529; font-weight: 600;">โรงงาน</th>
+                                        <th width="100" style="color: #212529; font-weight: 600;">เจ้าหน้าที่สรรหา</th>
+                                        <th width="100" style="color: #212529; font-weight: 600;">วันที่สร้าง</th>
                                         <th width="80">สถานะ</th>
                                         <th width="120" class="text-center">จัดการ</th>
                                     </tr>
@@ -271,6 +273,19 @@
                                     @endif
                                 </td>
                                 <td>
+                                    <span style="color: #495057; font-size: 12px;">
+                                        {{ $emp->recruiter?->value ?? '-' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="color: #495057; font-size: 12px;">
+                                        <div>{{ $emp->created_at ? $emp->created_at->format('d/m/Y') : '-' }}</div>
+                                        @if($emp->createdBy)
+                                        <small class="text-muted">{{ $emp->createdBy->name }}</small>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>
                                     @php
                                         $status = $statusOptions->firstWhere('id', $emp->emp_status)?->value ?? 'ไม่ระบุ';
                                         $statusClass = match($status) {
@@ -302,7 +317,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">
+                                <td colspan="10" class="text-center py-4 text-muted">
                                     😔 ไม่พบข้อมูลพนักงาน
                                     <br><small>ลองค้นหาด้วยคำอื่น หรือลองล้างตัวกรองข้อมูล</small>
                                 </td>

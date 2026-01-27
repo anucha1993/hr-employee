@@ -148,6 +148,20 @@ class EmployeeForm extends Component
             }
         } else {
             $this->emp_emergency_contacts = [['name' => '', 'phone' => '', 'relation' => ''], ['name' => '', 'phone' => '', 'relation' => '']];
+            
+            // ตั้งค่า default เจ้าหน้าที่สรรหาเป็นผู้ใช้ปัจจุบัน (ถ้ามีชื่อตรงกัน)
+            $user = Auth::user();
+            if ($user) {
+                $recruiterGlobalSet = GlobalSetModel::where('name', 'RECRUITER')->first();
+                if ($recruiterGlobalSet) {
+                    $recruiterValue = GlobalSetValueModel::where('global_set_id', $recruiterGlobalSet->id)
+                        ->where('value', $user->name)
+                        ->first();
+                    if ($recruiterValue) {
+                        $this->emp_recruiter_id = $recruiterValue->id;
+                    }
+                }
+            }
         }
     }
 
